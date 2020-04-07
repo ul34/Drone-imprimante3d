@@ -13,6 +13,7 @@ C'est avantage sa résistance méchanique plus faible a l'étirement que la plus
    
 
  
+ 
  - Paramétres impression 3D
  
 -Surface d'impression minimale pour ce drone 180*180 mm.
@@ -28,6 +29,7 @@ C'est avantage sa résistance méchanique plus faible a l'étirement que la plus
 Remarque: les températures d'impression varie en fonction de la marque de plastique utilisée.
  
  
+
 
 - Fichier impression 3D
 
