@@ -7,8 +7,9 @@ P.I.D &amp; I3D
 - Drone Frame impression 3D 
 
 -Quel type de plastique utiliser ?
-   Personnelement j'ai utiliser du PETG mais cela est une solution sous-optimal, le polypropylene plus difficille a imprimée, il         ne colle pas au surface type build-plate, verre. Le polypropylene ne colle que sur sur le polypropylene.
-   C'est avantage sa résistance méchanique plus faible a l'étirement que la plus part des plastiques il posséde néanmoins une grande résistance au choque pour nous la résistance au choque est éssentielles. 
+   
+Personnelement j'ai utiliser du PETG mais cela est une solution sous-optimal, le polypropylene plus difficille a imprimée, il         ne colle pas au surface type build-plate, verre. Le polypropylene ne colle que sur sur le polypropylene.
+C'est avantage sa résistance méchanique plus faible a l'étirement que la plus part des plastiques il posséde néanmoins une grande résistance au choque pour notre projet la résistance au choque est éssentielles. 
    
 
  - Paramétres impression 3D
@@ -27,7 +28,17 @@ Remarque: les températures d'impression varie en fonction de la marque utilisé
  
  
 - Fichier impression 3D
- -
+
+-Drone.montage.stl ce fichié n'est pas a imprimé il montre juste l'assemblage des différentes piéces.
+
+-N.ruche.stl ce fichié doit étre imprimée deux fois, ce fichié permet d'imprimé les deux plaques qui permette de fixer les bras.
+les deux plaques qui se composent de losange doivent étre tourné a 90°, les losanges ne doivent pas étre dirigé dans le méme sens  car vous aurez une frame moins rigide.Regarder bien le fichier Drone.montage.stl vous verrez les losanges ne sont pas dans le méme sens.
+
+-N.bras.stl ce fichier permet d'imprimée les bras du drone duplique les au nombres de 4 dans votre slicer (Cura...).
+
+-N.calibras.stl ce fichier permet d'imprimer des piéces aligne au millieux sur la longeur est la largeur.Elle permettra de glisser un rond de 6mm de diamétre pour pouvoir calibrer les coefficients P.I.D des axes PITCH et ROLL.
+
+
 
 
 
