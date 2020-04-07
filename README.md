@@ -4,16 +4,16 @@ P.I.D &amp; I3D
                                                Drone quadrimoteur en X.
 
 
--Drone Frame impression 3D 
+- Drone Frame impression 3D 
 
 -Quel type de plastique utiliser ?
    Personnelement j'ai utiliser du PETG mais cela est une solution sous-optimal, le polypropylene plus difficille a imprimée, il         ne colle pas au surface type build-plate, verre. Le polypropylene ne colle que sur sur le polypropylene.
    C'est avantage sa résistance méchanique plus faible a l'étirement que la plus part des plastiques il posséde néanmoins une grande résistance au choque pour nous la résistance au choque est éssentielles. 
    
 
- -Paramétres impression 3D
+ - Paramétres impression 3D
  
-- Surface d'impression minimale pour ce drone 180*180 mm.
+-Surface d'impression minimale pour ce drone 180*180 mm.
  
 -Température impression buse PETG : 245 C°
  
