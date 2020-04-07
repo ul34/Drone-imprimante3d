@@ -24,19 +24,18 @@ C'est avantage sa résistance méchanique plus faible a l'étirement que la plus
  
 -Hauteur de couche 0.2 mm
  
-Remarque: les températures d'impression varie en fonction de la marque utilisée.
+Remarque: les températures d'impression varie en fonction de la marque de plastique utilisée.
  
  
 - Fichier impression 3D
 
 -Drone.montage.stl ce fichié n'est pas a imprimé il montre juste l'assemblage des différentes piéces.
 
--N.ruche.stl ce fichié doit étre imprimée deux fois, ce fichié permet d'imprimé les deux plaques qui permette de fixer les bras.
-les deux plaques qui se composent de losange doivent étre tourné a 90°, les losanges ne doivent pas étre dirigé dans le méme sens  car vous aurez une frame moins rigide.Regarder bien le fichier Drone.montage.stl vous verrez les losanges ne sont pas dans le méme sens.
+-N.ruche.stl ce fichié doit étre imprimée deux fois, ce fichié permet d'imprimé les deux plaques qui permettent de fixer les bras.Les deux plaques qui se composent de losange doivent étre tourné a 90°, les losanges ne doivent pas étre dirigé dans le méme sens  car vous aurez une frame moins rigide.Regarder bien le fichier Drone.montage.stl vous verrez les losanges ne sont pas dans le méme sens.
 
 -N.bras.stl ce fichier permet d'imprimée les bras du drone duplique les au nombres de 4 dans votre slicer (Cura...).
 
--N.calibras.stl ce fichier permet d'imprimer des piéces aligne au millieux sur la longeur est la largeur.Elle permettra de glisser un rond de 6mm de diamétre pour pouvoir calibrer les coefficients P.I.D des axes PITCH et ROLL.
+-N.calibras.stl ce fichier permet d'imprimer des piéces aligne au millieux sur la longeur est la largeur.Elle permettra de glisser un rond de 6mm de diamétre pour pouvoir calibrer les coéfficients P.I.D des axes PITCH et ROLL.
 
 
 
