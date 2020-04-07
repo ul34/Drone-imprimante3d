@@ -13,17 +13,17 @@ P.I.D &amp; I3D
 
  -Paramétres impression 3D
  
- - Surface d'impression minimale pour ce drone 180*180 mm.
+- Surface d'impression minimale pour ce drone 180*180 mm.
  
- -Température impression buse PETG : 245 C°
+-Température impression buse PETG : 245 C°
  
- -Température impression plateau PETG : 80 C°
+-Température impression plateau PETG : 80 C°
  
- -Buse 0.6 mm
+-Buse 0.6 mm
  
- -Hauteur de couche 0.2 mm
+-Hauteur de couche 0.2 mm
  
-  Remarque: les températures d'impression varie en fonction de la marque utilisée.
+Remarque: les températures d'impression varie en fonction de la marque utilisée.
  
  
 3) Fichier impression 3D
