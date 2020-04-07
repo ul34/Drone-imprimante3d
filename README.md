@@ -12,6 +12,7 @@ Personnelement j'ai utiliser du PETG mais cela est une solution sous-optimal, le
 C'est avantage sa résistance méchanique plus faible a l'étirement que la plus part des plastiques il posséde néanmoins une grande résistance au choque pour notre projet la résistance au choque est éssentielles. 
    
 
+ 
  - Paramétres impression 3D
  
 -Surface d'impression minimale pour ce drone 180*180 mm.
@@ -27,11 +28,14 @@ C'est avantage sa résistance méchanique plus faible a l'étirement que la plus
 Remarque: les températures d'impression varie en fonction de la marque de plastique utilisée.
  
  
+
 - Fichier impression 3D
 
 -Drone.montage.stl ce fichié n'est pas a imprimé il montre juste l'assemblage des différentes piéces.
 
--N.ruche.stl ce fichié doit étre imprimée deux fois, ce fichié permet d'imprimé les deux plaques qui permettent de fixer les bras.Les deux plaques qui se composent de losange doivent étre tourné a 90°, les losanges ne doivent pas étre dirigé dans le méme sens  car vous aurez une frame moins rigide.Regarder bien le fichier Drone.montage.stl vous verrez les losanges ne sont pas dans le méme sens.
+-N.basdrone.stl ce fichié contient la piéce du bas du drone avec le support de batterie (l'orsque vous imprimerai cette piéce activer les supports).
+
+-N.ruche.stl ce fichié contient la piéce du haut qui permet de fixer les bras du drone.Il faut que les losanges soit perpendiculaire au losange de la piéce du bas pour avoir une rigidité égale.
 
 -N.bras.stl ce fichier permet d'imprimée les bras du drone duplique les au nombres de 4 dans votre slicer (Cura...).
 
