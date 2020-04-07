@@ -26,7 +26,7 @@ P.I.D &amp; I3D
 Remarque: les températures d'impression varie en fonction de la marque utilisée.
  
  
-3) Fichier impression 3D
+- Fichier impression 3D
  -
 
 
