@@ -432,14 +432,14 @@ for (int i = 0; i < max_samples; i++) {
  Yawgyro1 -= Eyaw1;
 
 
- // Angle calculation using integration
+ // calcul de l'angle par integration
  angleRO += (Rollgyro / (FREQ * SSF_GYRO));
- anglePO += (-Pitchgyro / (FREQ * SSF_GYRO)); // Change sign to match the accelerometer's one
+ anglePO += (-Pitchgyro / (FREQ * SSF_GYRO));  
   angleRO1 += (Rollgyro1 / (FREQ * SSF_GYRO));
  anglePO1 += (-Pitchgyro1 / (FREQ * SSF_GYRO));
 
 
- // Transfer roll to pitch if IMU has yawed
+ // 
  anglePO += angleRO * sin(Yawgyro * (PI / (FREQ * SSF_GYRO * 180)));
 
  angleRO -= anglePO * sin(Yawgyro * (PI / (FREQ * SSF_GYRO * 180)));
