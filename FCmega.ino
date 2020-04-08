@@ -228,10 +228,10 @@ void activation(){
 void Signeauxcorrec(){
  if ( decollage == 1){ 
    
-  mot1 = ConsG+EPIDR-EPIDP-EPIDY;
-  mot2 = ConsG-EPIDR-EPIDP+EPIDY;
-  mot3 = ConsG+EPIDR+EPIDP+EPIDY;
-  mot4 = ConsG-EPIDR+EPIDP-EPIDY;
+ mot1 = ConsG-EPIDR-EPIDP-EPIDY;
+ mot2 = ConsG+EPIDR-EPIDP+EPIDY;
+ mot3 = ConsG-EPIDR+EPIDP+EPIDY;
+ mot4 = ConsG+EPIDR+EPIDP-EPIDY;
   
   
  batterieV = batterieV * 0.92 + (analogRead(0) + 65) * 0.09853;
