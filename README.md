@@ -60,10 +60,15 @@ Remarque: les températures d'impression varie en fonction de la marque de plast
 
 -Batterie 3S 11.1v ~30€
 
+- Microcontroleur
+
+L'arduino est un circuit électronique composer d'un microcontroleur que l'on peut appeler micro-ordinateur il possédent de la memoire morte reprogrammable (EPROM) de la mémoire vive et un processeur qui fait les calculs,il est doté d'entrée est de sortie, alors il peut communiquer de l'information sous forme électrique (OUTPUT) est recevoir de l'information (INPUT).
+Il ya la partie alimentation composée d'un ou de plusieurs régulateur qui va limiter la tension a 5v est 3.3v avec des Condensateur est des résistances qui permettent de stabiliser la tension, un MiCro a besoin d'une alimentation trés stable pour fonctionner correctement. il ya aussi l'oscillateur qui permet au MiCro de se reperer dans le temps est determine aussi sa rapidité d'éxecution en HZ. Puis la derniere partie qui est un convertisseur USB::UART qui vous permet de televerser le programme dans le MiCro, mais pas que il permet aussi de recevoir des données pour voir si notre Prog est fonctionnel.
+Résumons L'arduino est un MiCro "Plug&Play" qui va nous permettre de recevoir des donnés les transformés avec des calculs puis transmettre des données a des composants electronique. 
 
 - Le gyroscope & accéléromètre
 
--Le MPU6050 est une centrale inertielle qui permet au microcontrolleur de connaitre la position du drone en degrés 
+-Le MPU6050 est une centrale inertielle qui permet au microcontrolleur de connaitre la position du drone en degrés est la vitesse a laquelle il se déplace en degrés/S. Vous verrez plus tard qu'il est parametrable cela nous permettra de determiner une certaines plage de mesure ou activer des filtres.Il communiquera avec l'arduino via le protocole de communication nommé "I2C".
 
 
 
