@@ -100,7 +100,7 @@ https://www.youtube.com/watch?v=yRw2mC_6A00
 
 
  
- ![alt tag](https://user-images.githubusercontent.com/52819943/78615340-866ab880-7871-11ea-9ce7-7f5a4f877526.png)
+ 
  ![](https://user-images.githubusercontent.com/52819943/78615340-866ab880-7871-11ea-9ce7-7f5a4f877526.png | width=100)
   
  
