@@ -87,15 +87,20 @@ Malgré ses explication nous ne savons toujour pas comment envoyer de l'informat
 
 - Moteur brushless
 
--Ce sont des moteur sans balais est collecteur car ses moteur peuvent avoir une vitesse de rotation trés élever ce qui augmente la durée de vie du moteur mais il faut en contrepartie un circuit electronique pour assurer le role des balais est collecteur, l'orsque vous acheté des moteurs de drone vous verrez des inscriptions il ya d'abord les dimensions du moteur puis une indication sur la vitesse de rotation en fonction du voltage, je vais vous donner un exemple "BR2212 1000KV" vous voyez le nombre 2212, composé de quatre chifre ?. Les deux premier chiffre "22" indique le diamétre du stator et les deux suivant représente la hauteur du stator "12". Les KV vous donnent la vitesse du moteur en fonction du voltage que vous lui donné, nous avons la un moteur "1000KV" si je lui donne 2V le moteur tournera alors a 2000 tour/minutes. Nous allons maintenant parler du fonctionnement d'un moteur brushless tout d'abord il existe deux variantes le Brushless in-runner ou le stator est en périphérie est le rotor est central et le out-runner avec le stator central est le rotor appelé "cloche" a l'exterieur cela permet d'avoir un couple plus important, plus le diamétre de la cloche est important plus vous aurez de couple ces moteur sont les plus utiliser dans le monde du drone je n'ai jamais vue un moteur in-runner sur un drone. 
+-Ce sont des moteur électrique sans balais est collecteur car ses moteur peuvent avoir une vitesse de rotation trés élever ce qui augmente la durée de vie du moteur mais il faut en contrepartie un circuit electronique pour assurer le role des balais est collecteur, l'orsque vous acheté des moteurs de drone vous verrez des inscriptions il ya d'abord les dimensions du moteur puis une indication sur la vitesse de rotation en fonction du voltage, je vais vous donner un exemple "BR2212 1000KV" vous voyez le nombre 2212, composé de quatre chifre ?. Les deux premier chiffre "22" indique le diamétre du stator et les deux suivant représente la hauteur du stator "12". Les KV vous donnent la vitesse du moteur en fonction du voltage que vous lui donné, nous avons la un moteur "1000KV" si je lui donne 2V le moteur tournera alors a 2000 tour/minutes. Nous allons maintenant parler du fonctionnement d'un moteur brushless tout d'abord il existe deux variantes le Brushless in-runner ou le stator est en périphérie est le rotor est central et le out-runner avec le stator central est le rotor appelé "cloche" a l'exterieur cela permet d'avoir un couple plus important, plus le diamétre de la cloche est important plus vous aurez de couple ces moteur sont les plus utiliser dans le monde du drone je n'ai jamais vue un moteur in-runner sur un drone. 
 
 Le rotor se compose d'aimant permanent avec un champ magnétique fixe, le stator est composer de bobines en changant le sens du courant on inverse les poles du champ magnétique rappeller vous que le NORD attire le SUD le SUD repousse le SUD est le NORD repousse le NORD, ses la que vient la notion de séquence pour faire tourner votre moteur il va falloir alimenter les bobines en inversant le sens du courant au bon moment afin que les champs magnétiques des bobines pousse et attire dans le sens voulu les aimants permanent pour crée une rotation. Une sequence se divise en plusieurs étapes qui se répéte, pour pouvoir connaitre la position du rotor est exécuter la bonne étapes on mesure le voltage de la bobine qui n'est pas alimenté, no moteur ont trois phase donc le nombre de bobines est un multiple de trois, imaginé un moteur avec trois bobines avec un point commun a chaque étapes on alimente deux bobines sur trois est on mesure le voltage de la bobine libre cette tension varie en fonction de la position de l'aimant permanent du rotor parapport a la bobine quand l'aimant est a 180° donc alignée avec la bobine la tension est nule ses ce que l'on appelle le "ZERO CROSS" qui permet au controleur de vitesse de savoir quand passer a l'étape suivante.
 
 
 - Radiocommande & recepteur
 
--La radiocommande vous permez de déplacer le drone autour des trois axes ROLL,PITCH,YAW est de controler les GAZ le recepteur qui se trouve sur le dronne recoit les signaux de la télécommande et les transmets au controleur de vol.
-Le recepteur communique avec le controleur de vol via des channels et nous allons en utiliser quatre car nous avons quatre commande différente ROLL,PITCH,YAW et GAZ, la méthode de communication entre le recepteur est notre controleur de vol est la méme que celle utilisée pour controler les ESC,le recepteur enverra l'information en faisant varier la largeur d'impulsion en fonction de notre commande entre 1000us et 2000us pour lires la largeur d'impulsion soit le temps ou l'impulsion reste a l'etat haut  nous allons utiliser les interruptions de l'arduino qui s'active a chaque changement d'état.
+-La radiocommande vous permez de déplacer le drone autour des trois axes ROLL,PITCH,YAW est de controler les GAZ. Le récepteur qui se trouve sur le dronne recoit les signaux de la télécommande et les transmets au controleur de vol.
+Le recepteur communique avec le controleur de vol via des channels et nous allons en utiliser quatre car nous avons quatre commande différente ROLL,PITCH,YAW et GAZ, la méthode de communication entre le récepteur est notre controleur de vol est la méme que celle utilisée pour controler les ESC,le recepteur enverra l'information en faisant varier la largeur d'impulsion en fonction de notre commande entre 1000us et 2000us pour lires la largeur d'impulsion soit le temps ou l'impulsion reste a l'etat haut  nous allons utiliser les interruptions de l'arduino qui s'active a chaque changement d'état.
+
+L'orsque vous achetez votre radiocommande vous devrez choisir votre configuration de commande appeller Mode cliquez sur l'image suivante pour voir ou se trouve les commandes du PITCH,ROLL,YAW,GAZ en fonction du Mode.
+
+
+
 
 
 - Hélices
@@ -120,7 +125,12 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  
  nombre de pales faibles = poussée plus faible → rendement énergétique élevé.
  
- Pour augmenter la poussée vous pouvez augmentez la taille des hélices mais cela a ses limites vous risquez d'arracher le rotor de votre moteur ou  de crée une usure prématuré des roulement, pour notre drone prenez des hélices de "12" pouces, personnellemnt j'utilise des hélices 1045 soit "10" pouces 25cm avec un pas de 4.5.
+ Pour augmenter la poussée vous pouvez augmentez la taille des hélices mais cela a ses limites vous risquez d'arracher le rotor de votre moteur ou  de crée une usure prématuré des roulements, pour notre drone prenez des hélices de "12" pouces maximum, personnellemnt j'utilise des hélices 1045 soit "10" pouces 25cm avec un pas de 4.5.
+ 
+ 
+ - Montage composant & soudure
+ 
+ 
  
  
 
