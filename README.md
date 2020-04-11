@@ -60,6 +60,10 @@ Remarque: les températures d'impression varie en fonction de la marque de plast
 
 -Batterie 3S 11.1v ~30€
 
+-Hélices horaires * 2
+
+-Hélices anti-horaires
+
 - Microcontroleur
 
 L'arduino est un circuit électronique composer d'un microcontroleur que l'on peut appeler micro-ordinateur il possédent de la memoire morte reprogrammable (EPROM) de la mémoire vive et un processeur qui fait les calculs,il est doté d'entrée est de sortie, alors il peut communiquer de l'information sous forme électrique(OUTPUT)est recevoir de l'information(INPUT).
@@ -89,6 +93,38 @@ Le rotor se compose d'aimant permanent avec un champ magnétique fixe, le stator
 
 
 - Radiocommande & recepteur
+
+-La radiocommande vous permez de déplacer le drone autour des trois axes ROLL,PITCH,YAW est de controler les GAZ le recepteur qui se trouve sur le dronne recoit les signaux de la télécommande et les transmets au controleur de vol.
+Le recepteur communique avec le controleur de vol via des channels et nous allons en utiliser quatre car nous avons quatre commande différente ROLL,PITCH,YAW et GAZ, la méthode de communication entre le recepteur est notre controleur de vol est la méme que celle utilisée pour controler les ESC,le recepteur enverra l'information en faisant varier la largeur d'impulsion en fonction de notre commande entre 1000us et 2000us pour lires la largeur d'impulsion soit le temps ou l'impulsion reste a l'etat haut  nous allons utiliser les interruptions de l'arduino qui s'active a chaque changement d'état.
+
+
+- Hélices
+
+-Les hélices permettent a notre drone de se déplacer, elle pousse l'air a une grande vitesse derriére est nous avons depuis Newton que toute masse soumise a une force (action) oppose a celle si une force égale (contre-réaction) ce qui crée la poussée. Pour choisir ses hélices il ya plusieurs caractéristiques a prendre en compte.
+
+-Le pas géométrique
+
+Petit pas = plus grande traction à faible vitesse, mais vitesse maxi limitée.
+
+Grand pas = plus petite traction à faible vitesse, mais vitesse maxi élevée.
+
+-La taille des hélices
+
+Grande Hélice = beaucoup de portance → vol stable mais a besoin de puissance pour faire 1 tour entier → moteur important.
+
+Petite Hélice = peu de portance → vol moins stable et à besoin de moins de puissance pour faire 1 tour entier → moteur faible.
+
+-Nombre de pales
+
+ nombre de pales élevés = poussée plus élevée → rendement énergétique plus faible.
+ 
+ nombre de pales faibles = poussée plus faible → rendement énergétique élevé.
+ 
+ Pour augmenter la poussée vous pouvez augmentez la taille des hélices mais cela a ses limites vous risquez d'arracher le rotor de votre moteur ou  de crée une usure prématuré des roulement, pour notre drone prenez des hélices de "12" pouces, personnellemnt j'utilise des hélices 1045 soit "10" pouces 25cm avec un pas de 4.5.
+ 
+ 
+
+
 
 
 
