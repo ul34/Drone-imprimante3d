@@ -100,6 +100,9 @@ Le recepteur communique avec le controleur de vol via des channels et nous allon
 L'orsque vous achetez votre radiocommande vous devrez choisir votre configuration de commande appeller Mode cliquez sur l'image suivante pour voir ou se trouve les commandes du PITCH,ROLL,YAW,GAZ en fonction du Mode.
 
 
+<img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/Mode.png" width="200" height="125">
+
+
 
 
 
