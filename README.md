@@ -134,6 +134,13 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  - Montage composant & soudure
  
  
+ Prennez votre radiocommande si vous avez une Flysky fs-i6 allumez la restez appuyez sur le bouton "OK" qui vous méne vers un menu avec deux sous menu "System setup" et "Functions setup" déplacer vous avec les touches "up" et "down" sur le sous menu "Functions setup" et cliquez sur "OK" puis déplacez vous sur "Display" est cliquez "OK" est la vous verrez vos channels. Bougez vos commandes est vous verrez quel commande correspond a quel channel. 
+ 
+ RaDio Mode1 vous devriez avoir le "YAW" CH1, le "PITCH" CH2, les "GAZ" CH3, le "ROLL" CH4. Maintenat nous savons quel channel du recepteur transmet tel commande, si vous utilisez un arduino uno souder un fil de la CH1 du recepteur a la pin digital 8, CH2 a la pin digital 9, CH3 a la pin digital 11, CH4 a la pin digital 10. Si vous avez un arduino mega pro mini
+
+ 
+ 
+ 
  
  
 
