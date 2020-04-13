@@ -1,7 +1,7 @@
 # Drone-imprimante3d
 P.I.D &amp; I3D
 
-                                               Drone quadrimoteur en X.
+                                               DRONE QUADRIMOTEUR EN X.
 
 
 - Drone Frame impression 3D 
@@ -139,7 +139,9 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  RaDio Mode1 vous devriez avoir le "YAW" CH1, le "PITCH" CH2, les "GAZ" CH3, le "ROLL" CH4. Maintenat nous savons quel channel du recepteur transmet tel commande, si vous utilisez un arduino uno souder un fil de la CH1 du recepteur a la pin digital 8, CH2 a la pin digital 9, CH3 a la pin digital 11, CH4 a la pin digital 10. Si vous avez un arduino mega pro mini souder CH1 a la pin digital 53, CH2 a la pin digital 52, CH3 a la pin digital 50, CH4  a la pin digital 10.
  Si vous avez une RaDio Mode2 ou autre vos commande ne seront pas assigné au méme CH dites vous que pour l'arduino uno la pin digiital 8 doit recevoir du recepteur la commande du "YAW", la pin digital 9 le "PITCH", la pin digital 10 le "ROLL", la pin digital 11 les "GAZ" et pour l'arduino mega on suis la méme logique la pin digital 53 recoit le"YAW",pin digital 52 le "PITCH",pin digital 50 les "GAZ",pin digital 10 le "ROLL". SI vous vous trompez dans l'ordre des soudures ne vous embétés pas a dessouder nous verrons plus tard dans la partie programme comment changer l'assignation des pin.
  
- Maintenant nous passons au montage des deux gyroscopes tous d'abord imprimer les deux petits support qui se trouve dans le fichier "...." visé dessus les gyroscopes puis collé les deux support sur la plaque que vous avez imprimé avec le fichier "N.basdrone.stl". la position des gyroscopes sur la plaque n'est pas important mais le sens des gyroscopes doit étre respecté comme vous pouvais le voir sur l'image ci-dessous.
+ Maintenant nous passons au montage des deux gyroscopes tous d'abord imprimer les deux petits support qui se trouve dans le fichier "...." visé dessus les gyroscopes puis collé les deux support sur la plaque que vous avez imprimé avec le fichier "N.basdrone.stl". la position des GyRo sur la plaque n'est pas important mais le sens des gyroscopes doit étre respecté comme vous pouvais le voir sur l'image ci-dessous aidé vous en utilisant les petites fléches inscrites sur les GyRo.
+ Maintenant passons au soudure tous dabord il faut souder un fil entre le "VCC" du MPU-2 et sa broche "ADO" puis relier le "VCC"
+ des deux "MPU" sur le +3.3V de l'arduino, les deux "GND" sur le GND, les deux "SDA"(Serial data) sur "A4" les deux "SCL"(Serial clock line) sur "A5". Pour plus de solidité est éviter l'arrachement d'un fils réunissez les et faite une trésse.
  
  
   <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/DR.png" width="200" height="125">
