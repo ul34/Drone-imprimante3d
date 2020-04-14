@@ -96,12 +96,12 @@ Le rotor se compose d'aimant permanent avec un champ magnétique fixe, le stator
 -La radiocommande vous permez de déplacer le drone autour des trois axes ROLL,PITCH,YAW est de controler les GAZ. Le récepteur qui se trouve sur le dronne recoit les signaux de la télécommande et les transmets au controleur de vol.
 Le recepteur communique avec le controleur de vol via des channels et nous allons en utiliser quatre car nous avons quatre commande différente ROLL,PITCH,YAW et GAZ, la méthode de communication entre le récepteur est notre controleur de vol est la méme que celle utilisée pour controler les ESC,le recepteur enverra l'information en faisant varier la largeur d'impulsion en fonction de notre commande entre 1000us et 2000us pour lires la largeur d'impulsion soit le temps ou l'impulsion reste a l'etat haut  nous allons utiliser les interruptions de l'arduino qui s'active a chaque changement d'état.
 
-L'orsque vous achetez votre radiocommande vous devrez choisir votre configuration de commande appeller Mode cliquez sur l'image suivante pour voir ou se trouve les commandes du PITCH,ROLL,YAW,GAZ en fonction du Mode.
+L'orsque vous achetez votre radiocommande vous devrez choisir votre configuration de commande appeller Mode cliquez sur l'image suivante pour voir ou se trouve les commandes du PITCH,ROLL,YAW,GAZ en fonction du Mode, la deuxiéme image représente le récepteur.
 
 
 <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/Mode.png" width="200" height="125">
 
-<img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/Mode.png" width="200" height="125">
+<img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/Recepteur.png" width="200" height="125">
  
 
 
@@ -163,14 +163,15 @@ CH4"ROLL" a la pin digital 10.
  Si vous avez une RaDio Mode2 ou autre vos commande ne seront pas assigné au méme CH dites vous que pour l'arduino uno la pin digiital 8 doit recevoir du recepteur la commande du "YAW", la pin digital 9 le "PITCH", la pin digital 10 le "ROLL", la pin digital 11 les "GAZ" et pour l'arduino mega on suis la méme logique la pin digital 53 recoit le"YAW",pin digital 52 le "PITCH",pin digital 50 les "GAZ",pin digital 10 le "ROLL". SI vous vous trompez dans l'ordre des soudures ne vous embétés pas a dessouder nous verrons plus tard dans la partie programme comment changer l'assignation des pin.
  
  Maintenant nous passons au montage des deux gyroscopes tous d'abord imprimer les deux petits support qui se trouve dans le fichier "...." visé dessus les gyroscopes puis collé les deux support sur la plaque que vous avez imprimé avec le fichier "N.basdrone.stl". la position des GyRo sur la plaque n'est pas important mais le sens des gyroscopes doit étre respecté comme vous pouvais le voir sur l'image ci-dessous aidé vous en utilisant les petites fléches inscrites sur les GyRo.
- Maintenant passons au soudure tous dabord il faut souder un fil entre le "VCC" du MPU-2 et sa broche "ADO" puis relier le "VCC"
- des deux "MPU" sur le +3.3V de l'arduino, les deux "GND" sur le GND, les deux "SDA"(Serial data) sur "A4" les deux "SCL"(Serial clock line) sur "A5". Pour plus de solidité est éviter l'arrachement d'un fils réunissez les et faite une trésse.
- 
- 
- 
- 
- 
   <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/DR.png" width="200" height="125">
+ Maintenant passons au soudure tous dabord il faut souder un fil entre le "VCC" du MPU-2 et sa broche "ADO" puis relier le "VCC"
+ des deux "MPU" sur le +3.3V de l'arduino, les deux "GND" sur un GND, les deux "SDA"(Serial data) sur "A4" les deux "SCL"(Serial clock line) sur "A5". Pour plus de solidité est éviter l'arrachement d'un fils réunissez les et faite une trésse.
+ 
+ 
+ 
+ 
+ 
+  
   
   
   Il reste alors les ESC a installée est a racorder a l'arduino, regarder l'image ci-dessous est vous verrez les deux fils d'alimentation (+12v,-) le fils signaux avec son gnd puis les trois fils moteur rappeller vous nos moteur on trois phases et tous les moteurs de notre drone ne tourne pas dans le méme sens regarder de nouveau l'image ou il ya les deux gyroscopes vous verrez quel moteur tourne dans quel sens, horaire ou anti-horaire. Pour inverser le sens d'un moteur il suffit d'inverser le branchement des  fils moteur. Maintenant nous allons souder aux arduino les fils du signaux de chaque ESC . 
@@ -199,6 +200,8 @@ CH4"ROLL" a la pin digital 10.
 Pour alimenter les quatre ESC il faut fabriquer une "Power distribution board" on va faire un circuit imprimée comme sur l'image ci-dessous, prenez votre plaque de cuivre est un marqueur indélébile est redessiner les partie en rouge, les deux rectangle et le diviseurs de tension , mes a quoi le diviseur de tension peut il  servir ? l'arduino ne peut mesurer que des tensions inferieur a 5v notre batterie fait 12.6v pour pouvoir mesurer le niveau de charge de notre batterie et compenser la puissance des moteurs quand le voltage diminue, pour éviter d'avoir des commandes de moins en moin réactive au fils du vol il faut que l'arduino puisse mesurer le voltage alors nous méttons une diode avec deux resistances en serie est nous soudons un fil entre les deux resistances que nous relions a la pin analogique 0 . 
 
 Et voici le calcul qui nous permet de connaitre la valeur de"R1 = (U/U2)*R2-R2"  je choisi une valeur de resistance arbitraire pour R2 elle doit tous de méme étre assez élever pour que notre circuit ne consomme pas trop de courant on va prendre une valeur de 1000 Ohm, U represente la valeur de notre alimentation "12.6v", U2 la tension que l'on veut entre R1 et R2 donc 5v "R1=1520 =(12.6/5)*1000-1000" donc pour que U2 ou la broche Analogique 0 soit a 5v quand la batterie est a sa tention maximale il faut que R1 soit égale a 1520 Ohm, nous mettons une Resistance de 1.5k les 20 Ohm supplementaire n'ont pas un effet significatif et R2 1000 Ohm.
+
+ <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/DR.png" width="200" height="125">
 
  
  
