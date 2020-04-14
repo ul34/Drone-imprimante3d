@@ -98,8 +98,11 @@ Le recepteur communique avec le controleur de vol via des channels et nous allon
 
 L'orsque vous achetez votre radiocommande vous devrez choisir votre configuration de commande appeller Mode cliquez sur l'image suivante pour voir ou se trouve les commandes du PITCH,ROLL,YAW,GAZ en fonction du Mode, la deuxiéme image représente le récepteur.
 
+- RADIOCOMMANDE
 
 <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/Mode.png" width="200" height="125">
+
+- RECEPTEUR
 
 <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/Recepteur.png" width="200" height="125">
  
@@ -138,9 +141,9 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  
  Prennez votre radiocommande si vous avez une Flysky fs-i6 allumez la restez appuyez sur le bouton "OK" qui vous méne vers un menu avec deux sous menu "System setup" et "Functions setup" déplacer vous avec les touches "up" et "down" sur le sous menu "Functions setup" et cliquez sur "OK" puis déplacez vous sur "Display" est cliquez "OK" est la vous verrez vos channels. Bougez vos commandes est vous verrez quel commande correspond a quel channel. 
  
- RaDio Mode1 vous devriez avoir le "YAW" CH1, le "PITCH" CH2, les "GAZ" CH3, le "ROLL" CH4. Maintenat nous savons quel channel du recepteur transmet tel commande. 
+ RaDio Mode1 vous devriez avoir le "YAW" CH1, le "PITCH" CH2, les "GAZ" CH3, le "ROLL" CH4. Maintenat nous savons quel channel du recepteur transmet quel commande. 
  
- Si vous avez un arduino uno relier.
+ - ARDUINO UNO.
  
 CH1"YAW" du recepteur a la pin digital 8. 
 
@@ -150,7 +153,7 @@ CH3"GAZ" a la pin digital 11.
  
 CH4"ROLL" a la pin digital 10. 
  
- Si vous avez un arduino mega pro mini Relier. 
+ - ARDUINO MEGA PRO MINI. 
  
  CH1"YAW" a la pin digital 53. 
  
@@ -163,7 +166,9 @@ CH4"ROLL" a la pin digital 10.
  Si vous avez une RaDio Mode2 ou autre vos commande ne seront pas assigné au méme CH dites vous que pour l'arduino uno la pin digiital 8 doit recevoir du recepteur la commande du "YAW", la pin digital 9 le "PITCH", la pin digital 10 le "ROLL", la pin digital 11 les "GAZ" et pour l'arduino mega on suis la méme logique la pin digital 53 recoit le"YAW",pin digital 52 le "PITCH",pin digital 50 les "GAZ",pin digital 10 le "ROLL". SI vous vous trompez dans l'ordre des soudures ne vous embétés pas a dessouder nous verrons plus tard dans la partie programme comment changer l'assignation des pin.
  
  Maintenant nous passons au montage des deux gyroscopes tous d'abord imprimer les deux petits support qui se trouve dans le fichier "...." visé dessus les gyroscopes puis collé les deux support sur la plaque que vous avez imprimé avec le fichier "N.basdrone.stl". la position des GyRo sur la plaque n'est pas important mais le sens des gyroscopes doit étre respecté comme vous pouvais le voir sur l'image ci-dessous aidé vous en utilisant les petites fléches inscrites sur les GyRo.
+  
   <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/DR.png" width="200" height="125">
+ 
  Maintenant passons au soudure tous dabord il faut souder un fil entre le "VCC" du MPU-2 et sa broche "ADO" puis relier le "VCC"
  des deux "MPU" sur le +3.3V de l'arduino, les deux "GND" sur un GND, les deux "SDA"(Serial data) sur "A4" les deux "SCL"(Serial clock line) sur "A5". Pour plus de solidité est éviter l'arrachement d'un fils réunissez les et faite une trésse.
  
@@ -175,7 +180,8 @@ CH4"ROLL" a la pin digital 10.
   
   
   Il reste alors les ESC a installée est a racorder a l'arduino, regarder l'image ci-dessous est vous verrez les deux fils d'alimentation (+12v,-) le fils signaux avec son gnd puis les trois fils moteur rappeller vous nos moteur on trois phases et tous les moteurs de notre drone ne tourne pas dans le méme sens regarder de nouveau l'image ou il ya les deux gyroscopes vous verrez quel moteur tourne dans quel sens, horaire ou anti-horaire. Pour inverser le sens d'un moteur il suffit d'inverser le branchement des  fils moteur. Maintenant nous allons souder aux arduino les fils du signaux de chaque ESC . 
-  arduino uno.
+  
+  - ARDUINO UNO.
   
   ESC.moteur1 a la pin digital 4 
   
@@ -185,7 +191,7 @@ CH4"ROLL" a la pin digital 10.
   
   ESC.moteur4 a la pin digital 7  
   
-  arduino mega pro mini  
+  - ARDUINO MEGA PRO MINI.  
   
   le moteur1 a la pin digital 26 
   
@@ -201,7 +207,7 @@ Pour alimenter les quatre ESC il faut fabriquer une "Power distribution board" o
 
 Et voici le calcul qui nous permet de connaitre la valeur de"R1 = (U/U2)*R2-R2"  je choisi une valeur de resistance arbitraire pour R2 elle doit tous de méme étre assez élever pour que notre circuit ne consomme pas trop de courant on va prendre une valeur de 1000 Ohm, U represente la valeur de notre alimentation "12.6v", U2 la tension que l'on veut entre R1 et R2 donc 5v "R1=1520 =(12.6/5)*1000-1000" donc pour que U2 ou la broche Analogique 0 soit a 5v quand la batterie est a sa tention maximale il faut que R1 soit égale a 1520 Ohm, nous mettons une Resistance de 1.5k les 20 Ohm supplementaire n'ont pas un effet significatif et R2 1000 Ohm.
 
- <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/DR.png" width="200" height="125">
+ <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/PBD.png" width="200" height="125">
 
  
  
