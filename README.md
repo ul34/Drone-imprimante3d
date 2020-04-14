@@ -71,7 +71,7 @@ Résumons L'arduino est un MiCro "Plug&Play" qui va nous permettre de recevoir d
 
 - Le gyroscope & accéléromètre
 
--Le MPU6050 est une centrale inertielle qui permet au microcontrolleur de connaitre la position du drone autour de trois axe X = ROLL, Y = PITCH, Z = YAW en degrés est la vitesse a laquelle il se déplace en degrés/S. Vous verrez plus tard qu'il est parametrable cela nous permettra de determiner une certaines plage de mesure ou activer des filtres.Il communiquera avec l'arduino via le protocole de communication nommé "I2C".
+-Le MPU6050 est une centrale inertielle qui réuni gyroscope et accelerométre ce qui permet au microcontrolleur de connaitre la position du drone autour de trois axe X = ROLL, Y = PITCH, Z = YAW en degrés est la vitesse a laquelle il se déplace en degrés/S. Vous verrez plus tard qu'il est parametrable cela nous permettra de determiner une certaines plage de mesure ou activer des filtres.Il communiquera avec l'arduino via le protocole de communication nommé "I2C".
 
 - ESC
 
@@ -106,8 +106,7 @@ L'orsque vous achetez votre radiocommande vous devrez choisir votre configuratio
 
 <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/Recepteur.png" width="200" height="125">
  
-//
-//
+
 
 
 
