@@ -101,6 +101,9 @@ L'orsque vous achetez votre radiocommande vous devrez choisir votre configuratio
 
 <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/Mode.png" width="200" height="125">
 
+<img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/Mode.png" width="200" height="125">
+ 
+
 
 
 
@@ -139,16 +142,22 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  
  Si vous avez un arduino uno relier.
  
- CH1"YAW" du recepteur a la pin digital 8. 
- CH2"PITCH" a la pin digital 9. 
- CH3"GAZ" a la pin digital 11. 
- CH4"ROLL" a la pin digital 10. 
+CH1"YAW" du recepteur a la pin digital 8. 
+
+CH2"PITCH" a la pin digital 9. 
+ 
+CH3"GAZ" a la pin digital 11. 
+ 
+CH4"ROLL" a la pin digital 10. 
  
  Si vous avez un arduino mega pro mini Relier. 
  
  CH1"YAW" a la pin digital 53. 
+ 
  CH2"PITCH" a la pin digital 52. 
+ 
  CH3"GAZ" a la pin digital 50. 
+ 
  CH4"ROLL"  a la pin digital 10.
  
  Si vous avez une RaDio Mode2 ou autre vos commande ne seront pas assigné au méme CH dites vous que pour l'arduino uno la pin digiital 8 doit recevoir du recepteur la commande du "YAW", la pin digital 9 le "PITCH", la pin digital 10 le "ROLL", la pin digital 11 les "GAZ" et pour l'arduino mega on suis la méme logique la pin digital 53 recoit le"YAW",pin digital 52 le "PITCH",pin digital 50 les "GAZ",pin digital 10 le "ROLL". SI vous vous trompez dans l'ordre des soudures ne vous embétés pas a dessouder nous verrons plus tard dans la partie programme comment changer l'assignation des pin.
@@ -166,15 +175,23 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
   
   Il reste alors les ESC a installée est a racorder a l'arduino, regarder l'image ci-dessous est vous verrez les deux fils d'alimentation (+12v,-) le fils signaux avec son gnd puis les trois fils moteur rappeller vous nos moteur on trois phases et tous les moteurs de notre drone ne tourne pas dans le méme sens regarder de nouveau l'image ou il ya les deux gyroscopes vous verrez quel moteur tourne dans quel sens, horaire ou anti-horaire. Pour inverser le sens d'un moteur il suffit d'inverser le branchement des  fils moteur. Maintenant nous allons souder aux arduino les fils du signaux de chaque ESC . 
   arduino uno.
+  
   ESC.moteur1 a la pin digital 4 
+  
   ESC.moteur2 a la pin digital 5 
+  
   ESC.moteur3 a la pin digital 6 
+  
   ESC.moteur4 a la pin digital 7  
   
   arduino mega pro mini  
-  le moteur1 a la pin digital 26, 
-  le moteur2 a la pindigital 27, 
+  
+  le moteur1 a la pin digital 26 
+  
+  le moteur2 a la pindigital 27 
+  
   le moteur3 a la pin 28 
+  
   le moteur4 a la pin 29 
   
  Reliez tous les gnd des signaux au gnd de l'arduino.
