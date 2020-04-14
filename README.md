@@ -106,7 +106,8 @@ L'orsque vous achetez votre radiocommande vous devrez choisir votre configuratio
 
 <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/Recepteur.png" width="200" height="125">
  
-
+//
+//
 
 
 
@@ -141,9 +142,13 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  
  Prennez votre radiocommande si vous avez une Flysky fs-i6 allumez la restez appuyez sur le bouton "OK" qui vous méne vers un menu avec deux sous menu "System setup" et "Functions setup" déplacer vous avec les touches "up" et "down" sur le sous menu "Functions setup" et cliquez sur "OK" puis déplacez vous sur "Display" est cliquez "OK" est la vous verrez vos channels. Bougez vos commandes est vous verrez quel commande correspond a quel channel. 
  
- RaDio Mode1 vous devriez avoir le "YAW" CH1, le "PITCH" CH2, les "GAZ" CH3, le "ROLL" CH4. Maintenat nous savons quel channel du recepteur transmet quel commande. 
+ Si vous avez une RaDio Mode1 vous devriez avoir le "YAW" CH1, le "PITCH" CH2, les "GAZ" CH3, le "ROLL" CH4. Maintenat nous savons quel channel du recepteur transmet quel commande. 
  
  - ARDUINO UNO.
+ 
++ du recpteur au +5
+
+_ du recepteur au gnd
  
 CH1"YAW" du recepteur a la pin digital 8. 
 
@@ -153,7 +158,11 @@ CH3"GAZ" a la pin digital 11.
  
 CH4"ROLL" a la pin digital 10. 
  
- - ARDUINO MEGA PRO MINI. 
+ - ARDUINO MEGA PRO MINI.
+ 
+ + du recpteur au +5
+
+_ du recepteur au gnd
  
  CH1"YAW" a la pin digital 53. 
  
