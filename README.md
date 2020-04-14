@@ -145,9 +145,9 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  
  - ARDUINO UNO.
  
-+ du recpteur au +5
+le + du recpteur au +5v
 
-_ du recepteur au gnd
+le _ du recepteur au gnd
  
 CH1"YAW" du recepteur a la pin digital 8. 
 
@@ -159,9 +159,9 @@ CH4"ROLL" a la pin digital 10.
  
  - ARDUINO MEGA PRO MINI.
  
- + du recpteur au +5
+ le + du recpteur au +5
 
-_ du recepteur au gnd
+ le _ du recepteur au gnd
  
  CH1"YAW" a la pin digital 53. 
  
