@@ -5,10 +5,10 @@
 MPU6050 mpu(0x68);
 MPU6050 mpu1(0x69);
 
-#define MPU_ADDRESS 0x68
-#define MPU_ADDRESS1 0x69
-#define FREQ        250
-#define SSF_GYRO    65.5
+#define MPU_ADDRESS 0x68 //MPU-1
+#define MPU_ADDRESS1 0x69 //MPU-2
+#define FREQ        250 
+#define SSF_GYRO    65.5 // ± 250 °/s = 131, ± 500 °/s = 65.5, ± 1000 °/s = 32.8, ± 2000 °/s = 16.4
 
 boolean initialized;
 long Eroll, Epitch, Eyaw,  acc_total_vector, premicros, i, Eroll1, Epitch1, Eyaw1,  acc_total_vector1;
@@ -22,17 +22,17 @@ volatile unsigned int pulse_duration[4] = {1500, 1500, 1500, 1000};
 
 
 
-float KYP = 6; // Coefficient YAW 4  0.02
+float KYP = 6; // Coefficient YAW  
 float KYI = 0.22;
 float KYD = 0;
 
-float KRP = 1.3;
+float KRP = 1.3; // Coefficient Roll
 float KRI = 0.04;
-float KRD = 18;//18;
+float KRD = 18;
 
-float KPP = 1.3; //1.3;// Coefficient Pitch
-float KPI =0.04; //0.04;
-float KPD = 18;//18;
+float KPP = 1.3; // Coefficient Pitch
+float KPI =0.04; 
+float KPD = 18;
 
 float anglemaxP, anglemaxR, ConsG,  ConsP,  ConsR,  ConsY, EpropP,  EpropR,  EpropY,  EintP,  EintR,  EintY, EdevP, EdevR, EdevY, lastEP, lastER, lastEY, EPIDP, EPIDR, EPIDY,batterieV,angleP, angleR,ASP, ASR, ASY;
 int mot1, mot2, mot3, mot4 ;
@@ -48,25 +48,25 @@ int gros;
 
 void setup(){
  Serial.begin(57600);
-  PCICR  |= (1 << PCIE0);
-  PCMSK0 |= (1 << PCINT0);
-  PCMSK0 |= (1 << PCINT1);
-  PCMSK0 |= (1 << PCINT2);
-  PCMSK0 |= (1 << PCINT3);
+  PCICR  |= (1 << PCIE0); // Declaration des interruptions Registre PCICR = "Pin change interrupt register" 00000001
+  PCMSK0 |= (1 << PCINT0); // Registre PCMSK0 = "Pin change mask register" 00000001 = Pin digital 8 activée en interrupt en mode "Change"
+  PCMSK0 |= (1 << PCINT1); //  Registre PCMSK0 = "Pin change mask register" 00000011 = Pin digital 8 et 9 activée en interrupt en mode "Change"
+  PCMSK0 |= (1 << PCINT2); // Registre PCMSK0 = "Pin change mask register" 00000111 = Pin digital 8,9 et 10 activée en interrupt en mode "Change"
+  PCMSK0 |= (1 << PCINT3); //  Registre PCMSK0 = "Pin change mask register" 00001111 = Pin digital 8,9,10 et 11 activée en interrupt en mode "Change"
 
- batterieV= (analogRead(0) + 65) * 1.2317;
- DDRD  |= B11110000;
- Wire.begin();
- TWBR = 24;
- mpu.initialize();
- mpu.setXAccelOffset(-3771);
+ batterieV= (analogRead(0) + 65) * 1.2317; // Mesure de la tension de la batterie, 65 est additioner pour compenser la chute de tension crée par la diode (958+65)*1.2317 = 1260
+ DDRD  |= B11110000; // declaration de la pin digital 4,5,6,7
+ Wire.begin(); //lancer la  bibliothéque "Wire"
+ TWBR = 24;       
+ mpu.initialize(); // lancer la communication avec MPU-1
+ mpu.setXAccelOffset(-3771); // rentrer les valeurs de calibration obtenue avec le programme MPU6050.cpp pour chaque gyroscope MPU-1 et MPU-2.
  mpu.setYAccelOffset(-1100);
  mpu.setZAccelOffset(1106);
  mpu.setXGyroOffset(-10);
  mpu.setYGyroOffset(70);
  mpu.setZGyroOffset(-8);
 
-  mpu1.initialize();
+  mpu1.initialize(); // lancer la communication avec MPU-2
  mpu1.setXAccelOffset(497);
  mpu1.setYAccelOffset(1703);
  mpu1.setZAccelOffset(1148);
@@ -74,8 +74,8 @@ void setup(){
  mpu1.setYGyroOffset(206);
  mpu1.setZGyroOffset(-8);
 
- communication();
- Emoyen();
+ communication(); // appel de la fonction " communication()"
+ Emoyen(); // appel de la fonction " Emoyen()"
 
 
 }
@@ -94,17 +94,17 @@ void loop(){
 }
 
 
-void consigne(){
+void consigne(){  // la fonction consigne prend les signaux recu par les interruptions est les transformes en consigne pour le regulateur P.I.D
 
- ConsG = 0;
+ ConsG = 0;   
  ConsP = 0;
  ConsR = 0;
  ConsY = 0;
 
- chanel1 =  pulse_duration[2];
- chanel2 =  pulse_duration[1];
- chanel3 =  pulse_duration[3];
- chanel4 =  pulse_duration[0];
+ chanel1 =  pulse_duration[2]; //gaz
+ chanel2 =  pulse_duration[1]; //Pitch
+ chanel3 =  pulse_duration[3]; //Roll
+ chanel4 =  pulse_duration[0]; //Yw
 
  if (chanel1 < 1000) chanel1 = 1000;
  if (chanel1 > 1800) chanel1 = 1800;
@@ -155,8 +155,9 @@ void consigne(){
 
 
 
-void PID(){
-//erreur proportionnelle
+void PID(){ //La fonction PID prend la consigne envoyé est calcule l'erreur pour chaque axe
+
+ //erreur proportionnelle
 EpropP = ASP - ConsP;
 EpropR = ASR - ConsR;
 EpropY = ASY - ConsY;
@@ -167,7 +168,7 @@ EintP +=  EpropP;
 EintR +=  EpropR;
 EintY +=  EpropY;
 
-if ( EintP > 400 ) EintP = 400;
+if ( EintP > 400 ) EintP = 400; // limitation de l'erreur intégrale pour eviter l'effet "Windup"
 if ( EintP < -400 )EintP = -400;
  if ( EintR > 400 ) EintR = 400;
 if ( EintR < -400 )EintR = -400;
@@ -179,21 +180,19 @@ EdevP =  EpropP-lastEP;
 EdevR =  EpropR-lastER;
 EdevY =  EpropY-lastEY;
 
-
-lastEP =  EpropP;
+ lastEP =  EpropP;
 lastER =  EpropR;
 lastEY =  EpropY;
 
 
-
-//EPIDP = KPP * EpropP + KPI * EintP + KPD * EdevP; // erreur pid sortie pour chaque axe
+// erreur pid sortie pour chaque axe
 EPIDR = KRP * EpropR + KRI * EintR + KRD * EdevR;
 EPIDP = KPP * EpropP + KPI * EintP + KPD * EdevP;
 EPIDY = KYP * EpropY + KYI * EintY + KYD * EdevY;
 
 
 
-if ( EPIDP > 400 ) EPIDP = 400;
+if ( EPIDP > 400 ) EPIDP = 400; // on limite aussi l'erreur totale pour chaque axe
 if ( EPIDP < -400 )EPIDP = -400;
 if (EPIDR > 400 ) EPIDR = 400;
 if (EPIDR < -400 )EPIDR = -400;
@@ -203,7 +202,7 @@ if ( EPIDY < -400 )EPIDY = -400;
 }
 
 
-void resetvariable(){
+void resetvariable(){ // mise a zéro de toute les valeurs au démarage du drone
  lastEP = 0;
  lastER = 0;
  lastEY = 0;
@@ -215,7 +214,7 @@ void resetvariable(){
   EpropY = 0;
 }
 
-void activation(){
+void activation(){ //  Démarer et eteindre le Drone
  if(decollage == 0 && chanel1 <= 1008 && chanel4 > 1980 && chanel3 > 1980){
    decollage = 1;
    resetvariable();
@@ -231,7 +230,7 @@ void activation(){
 
 
 
-void Signeauxcorrec(){
+void Signeauxcorrec(){ // cette fonction recoit les valeur du PID est calcule la puissance a envoyer a chaque moteur elle calcule aussi le voltage pour compenser la perte de puissance
 if ( decollage == 1){
 
  mot1 = ConsG-EPIDR-EPIDP-EPIDY;
@@ -281,7 +280,7 @@ Serial.print("\t");
 
 }
 
-void transmission(){
+void transmission(){ // transmission s'occupe d'envoyer les signaux aux ESC de chaque moteur toute les 4ms=250HZ
 
 
 
@@ -304,7 +303,7 @@ while( PORTD >= 16){
 
 
 
- void communication(){
+ void communication(){ // Configuration de MPU-1 et MPU-2
 
  Wire.beginTransmission(MPU_ADDRESS);
  Wire.write(0x6B);
@@ -355,7 +354,7 @@ while( PORTD >= 16){
 
 
 
- void Emoyen(){
+ void Emoyen(){// Calcul une moyenne des variations naturelle des gyroscopes "Drift"
    int max_samples = 2000;
 for (int i = 0; i < max_samples; i++) {
    lectureMPU();
@@ -384,7 +383,7 @@ for (int i = 0; i < max_samples; i++) {
  }
 
 
- void lectureMPU (){
+ void lectureMPU (){ // Lecture des valeurs de l'accelérométre et du gyroscope MPU-1 et MPU-2
 
    Wire.beginTransmission(MPU_ADDRESS);  
  Wire.write(0x3B);
@@ -421,7 +420,7 @@ for (int i = 0; i < max_samples; i++) {
  }
 
 
- void ANgyro() {
+ void ANgyro() { // Cette fonction recoit le "Drift" et les valeurs brutes des Gyroscopes et fait un clacul de l'angle du Roll et Pitch
 
  Rollgyro -= Eroll;
  Pitchgyro -= Epitch;
@@ -439,7 +438,7 @@ for (int i = 0; i < max_samples; i++) {
  anglePO1 += (-Pitchgyro1 / (FREQ * SSF_GYRO));
 
 
- // 
+ // Transfert de l'angle entre le "Pitch" et le "Roll"  en fonction du YAW est converti le résultat en degrés
  anglePO += angleRO * sin(Yawgyro * (PI / (FREQ * SSF_GYRO * 180)));
 
  angleRO -= anglePO * sin(Yawgyro * (PI / (FREQ * SSF_GYRO * 180)));
@@ -450,7 +449,7 @@ for (int i = 0; i < max_samples; i++) {
 
  }
 
- void ANacc(){
+ void ANacc(){ // cette fonction calcul l'angle de l'accélérométre est convertie le resultat en degrés
 
 
      acc_total_vector = sqrt(pow(Rollacc, 2) + pow(Pitchacc, 2) + pow(Yawacc, 2));
@@ -473,7 +472,7 @@ for (int i = 0; i < max_samples; i++) {
 }
 
 
- void calculangle () {
+ void calculangle () { // calcul de l'angle est de l'angle/S
 
  if (initialized) {
    //  filtre plus le temps de bouclage est long (1-t)
@@ -503,12 +502,12 @@ for (int i = 0; i < max_samples; i++) {
 
 
 
-ISR(PCINT0_vect)
+ISR(PCINT0_vect)  // Routines d'interruptions calcul des l'argeur d'impulsions recut
 {
    current_time = micros();
 
 
-   if (PINB & B00000001) {
+   if (PINB & B00000001) {              
        if (previous_state[0] == LOW) {
            previous_state[0] = HIGH;
            timer[0]          = current_time;
