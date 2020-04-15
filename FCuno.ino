@@ -101,9 +101,9 @@ void consigne(){
  ConsR = 0;
  ConsY = 0;
 
- chanel1 =  pulse_duration[3];
+ chanel1 =  pulse_duration[2];
  chanel2 =  pulse_duration[1];
- chanel3 =  pulse_duration[2];
+ chanel3 =  pulse_duration[3];
  chanel4 =  pulse_duration[0];
 
  if (chanel1 < 1000) chanel1 = 1000;
