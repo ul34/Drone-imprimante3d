@@ -160,9 +160,9 @@ CH1"YAW" du recepteur a la pin digital 8.
 
 CH2"PITCH" a la pin digital 9. 
  
-CH3"GAZ" a la pin digital 11. 
+CH3"GAZ" a la pin digital 10. 
  
-CH4"ROLL" a la pin digital 10. 
+CH4"ROLL" a la pin digital 11. 
  
  - ARDUINO MEGA PRO MINI.
  
@@ -201,13 +201,13 @@ Maintenant nous passons au montage des deux gyroscopes tous d'abord imprimer les
   
   - ARDUINO MEGA PRO MINI.  
   
-  le moteur1 a la pin digital 26 
+  le ESC.moteur1 a la pin digital 26 
   
-  le moteur2 a la pindigital 27 
+  le ESC.moteur2 a la pindigital 27 
   
-  le moteur3 a la pin 28 
+  le ESC.moteur3 a la pin 28 
   
-  le moteur4 a la pin 29 
+  le ESC.moteur4 a la pin 29 
   
  Reliez tous les gnd des signaux au gnd de l'arduino.
   
