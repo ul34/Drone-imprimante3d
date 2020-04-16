@@ -139,7 +139,7 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  - Montage composant & soudure
  
  
-  Si vous avez le matérielle nécessaire pour réaliser des circuit imprimée les fichiers "PCB-FC.pdf" et "PCB-power distrib.pdf". Les deux autres fichier "PCB-FC-négatif.pdf" et "PCB-power distrib-négatif.pdf" sont utile si vous faites vos circuit imprimée avec une insoleuse. Si vous n'avez pas le materielle nécessaire suivez les instructions suivante.
+  Si vous avez le matérielle nécessaire pour réaliser des circuit imprimée est vous voulez transferez le circuit sur la plaque en cuivre en utilisant de l'acetone et alcool ou en utilisant le transfert par chaleur avec un fer a repasse imprimée avec une imprimante laser les fichiers "PCB-FC.pdf" et "PCB-power distrib.pdf". Les deux autres fichier "PCB-FC-négatif.pdf" et "PCB-power distrib-négatif.pdf" sont utile si vous faites vos circuit imprimée avec une insoleuse. Si vous n'avez pas le materielle nécessaire suivez les instructions suivante.
   
  
  Prennez votre radiocommande brancher le cable de bind si vous avez une Flysky fs-i6 allumez la et restez appuyez sur le bouton "Bind key" cela va permettre de crée la liaison entre la radiocommande est le recepteur puis restez appuyez sur le bouton "OK" qui vous méne vers un menu avec deux sous menu "System setup" et "Functions setup" déplacer vous avec les touches "up" et "down" sur le sous menu "Functions setup" et cliquez sur "OK" puis déplacez vous sur "Display" est cliquez "OK" est la vous verrez vos channels. Bougez vos commandes est vous verrez quel commande correspond a quel channel. 
@@ -215,12 +215,14 @@ Pour alimenter les quatre ESC il faut fabriquer une "Power distribution board" o
 
 Et voici le calcul qui nous permet de connaitre la valeur de "R1 = (U/U2)*R2-R2"  je choisi une valeur de resistance arbitraire pour R2 elle doit tous de méme étre assez élever pour que notre circuit ne consomme pas trop de courant (I = U/R) on va prendre une valeur de 1000 Ohm, U represente la valeur de notre alimentation "12.6v", U2 la tension que l'on veut entre R1 et R2 donc 5v "R1=1520 =(12.6/5)*1000-1000" donc pour que U2 ou la broche Analogique 0 soit a 5v quand la batterie est a sa tention maximale il faut que R1 soit égale a 1520 Ohm, nous mettons une Resistance de 1.5k les 20 Ohm supplementaire n'ont pas un effet significatif et R2 1000 Ohm.
 
-Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre une couche d'etein sur les pistes avec les huit trous pour alimenter vos ESC il peut passer dans ces pistes un courant de 60 amperes est sa risque de chauffer
+Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre une couche d'etein sur les pistes avec les huit trous pour alimenter vos ESC il peut passer dans ces pistes un courant de 60 amperes et risque de crée une surchauffe.
 
 
  <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/PBD.png" width="200" height="125">
  
-  l'orsque vous fixer les composants électroniques sur la piéce du fichier "N.basdrone.stl"
+ - Programme
+ 
+ 
 
  
  
