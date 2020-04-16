@@ -141,14 +141,14 @@ void consigne(){  // la fonction consigne prend les signaux recu par les interru
     ConsY = (chanel4-1492);
     }
 
-     anglemaxP = 15 * angleP;
+     anglemaxP = 15 * angleP; //32.8° angle maximum de rotation 15 = 492/32.8
      anglemaxR = 15 * angleR;
 
      ConsP -= anglemaxP ;
      ConsP /= 3;
      ConsR -=  anglemaxR;
      ConsR /= 3;
-     ConsY /= 3;
+     ConsY /= 3; // limiter la vitesse de rotation maximale 492/3 = 164°/S
 
 
 }
