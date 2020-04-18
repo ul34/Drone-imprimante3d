@@ -150,33 +150,33 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  
  
  
- -ARDUINO UNO.
+    -ARDUINO UNO.
  
-le + du recpteur au +5v
+    le + du recpteur au +5v
 
-le _ du recepteur au gnd
+    le _ du recepteur au gnd
  
-CH1"YAW" du recepteur a la pin digital 8. 
+    CH1"YAW" du recepteur a la pin digital 8. 
 
-CH2"PITCH" a la pin digital 9. 
+    CH2"PITCH" a la pin digital 9. 
+  
+    CH3"GAZ" a la pin digital 10. 
  
-CH3"GAZ" a la pin digital 10. 
+    CH4"ROLL" a la pin digital 11. 
  
-CH4"ROLL" a la pin digital 11. 
+    -ARDUINO MEGA PRO MINI.
  
- -ARDUINO MEGA PRO MINI.
- 
- le + du recpteur au +5
+    le + du recpteur au +5
 
- le _ du recepteur au gnd
+    le _ du recepteur au gnd
  
- CH1"YAW" a la pin digital 53. 
+    CH1"YAW" a la pin digital 53. 
  
- CH2"PITCH" a la pin digital 52. 
+    CH2"PITCH" a la pin digital 52. 
  
- CH3"GAZ" a la pin digital 50. 
+    CH3"GAZ" a la pin digital 50. 
  
- CH4"ROLL"  a la pin digital 10.
+    CH4"ROLL"  a la pin digital 10.
  
 
 -Maintenant nous passons au montage des deux gyroscopes tous d'abord imprimer les deux petits support qui se trouve dans le fichier "...." visé dessus les gyroscopes puis collé les deux support sur la plaque que vous avez imprimé avec le fichier "N.basdrone.stl". la position des GyRo sur la plaque n'est pas important mais le sens des gyroscopes doit étre respecté comme vous pouvais le voir sur l'image ci-dessous aidé vous en utilisant les petites fléches inscrites sur les GyRo.
@@ -189,27 +189,27 @@ CH4"ROLL" a la pin digital 11.
  
   -Il reste alors les ESC a installée est a racorder a l'arduino, regarder l'image ci-dessous est vous verrez les deux fils d'alimentation (+12v,-) le fils signaux avec son gnd puis les trois fils moteur, rappeller vous nos moteur on trois phases et tous les moteurs de notre drone ne tourne pas dans le méme sens regarder de nouveau l'image ou il ya les deux gyroscopes vous verrez quel moteur tourne dans quel sens, horaire ou anti-horaire. Pour inverser le sens d'un moteur il suffit d'inverser le branchement des fils moteur. Maintenant nous allons souder aux arduino les fils du signaux de chaque ESC . 
   
-  -ARDUINO UNO.
+    -ARDUINO UNO.
   
-  ESC.moteur1 a la pin digital 4 
+    ESC.moteur1 a la pin digital 4 
   
-  ESC.moteur2 a la pin digital 5 
+    ESC.moteur2 a la pin digital 5 
   
-  ESC.moteur3 a la pin digital 6 
+    ESC.moteur3 a la pin digital 6 
   
-  ESC.moteur4 a la pin digital 7  
+    ESC.moteur4 a la pin digital 7  
   
-  -ARDUINO MEGA PRO MINI.  
+    -ARDUINO MEGA PRO MINI.  
   
-  le ESC.moteur1 a la pin digital 26 
+    le ESC.moteur1 a la pin digital 26 
   
-  le ESC.moteur2 a la pindigital 27 
+    le ESC.moteur2 a la pindigital 27 
   
-  le ESC.moteur3 a la pin 28 
+    le ESC.moteur3 a la pin 28 
   
-  le ESC.moteur4 a la pin 29 
+    le ESC.moteur4 a la pin 29 
   
- Reliez tous les gnd des signaux au gnd de l'arduino.
+    Reliez tous les gnd des signaux au gnd de l'arduino.
   
 Pour alimenter les quatre ESC il faut fabriquer une "Power distribution board" on va faire un circuit imprimée comme sur l'image ci-dessous, prenez votre plaque de cuivre est un marqueur indélébile est redessiner les partie en rouge puis tremper la plaque de cuivre dans une solution de perchlorure de fer est agiter doucement il devrait rester que les parties colorier, les deux rectangle et le diviseurs de tension , mes a quoi le diviseur de tension peut il  servir ? l'arduino ne peut mesurer que des tensions inferieur ou égale a 5v notre batterie fait 12.6v pour pouvoir mesurer le niveau de charge de notre batterie et compenser la puissance des moteurs quand le voltage diminue, pour éviter d'avoir des commandes de moins en moin réactive au fils du vol il faut que l'arduino puisse mesurer le voltage alors nous méttons une diode avec deux resistances en serie est nous soudons un fil entre les deux resistances que nous relions a la pin analogique 0 . 
 
@@ -240,46 +240,33 @@ Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre un
  Une fois que vous avez choisi l'adresse téleverser le programme, pour le lancer ouvré le Serial  est rentré un caractére au hasard aprés une trentaine de seconde vous verrez apparaitre une ligne avec ecrit "Sensor readings with offsets" suivie de six nombre qui doivent etre proche de la suite suivante "0 0 16384 0 0 0",la ligne suivante ou il ya ecrit "Your offsets" suivie de six nombre "-3771 -1100 1106 -10 70 -8" se sont vos valeurs de calibration pour les trois axes de l'accelerométre est les trois axes du gyroscopes. Faites cette opération pour les deux Gyro puis ouvrez le fichier "...." si vous utilisez l'arduin uno ou "...." pour l'arduino mega pro mini est remplacer les six valeurs suivante pour chaque Gyro par vos valeurs d'offset.  
  
  
-  mpu.initialize(); //MPU-1 = 0x68
+    mpu.initialize(); //MPU-1 = 0x68
   
+    mpu.setXAccelOffset(-3771);
   
-  mpu.setXAccelOffset(-3771);
+    mpu.setYAccelOffset(-1100);
+ 
+    mpu.setZAccelOffset(1106);
   
+    mpu.setXGyroOffset(-10);
   
-  mpu.setYAccelOffset(-1100);
+    mpu.setYGyroOffset(70);
   
+    mpu.setZGyroOffset(-8);
   
-  mpu.setZAccelOffset(1106);
+    mpu1.initialize(); //MPU-2 = 0x69
   
+    mpu1.setXAccelOffset(497);
   
-  mpu.setXGyroOffset(-10);
+    mpu1.setYAccelOffset(1703);
   
+    mpu1.setZAccelOffset(1148);
   
-  mpu.setYGyroOffset(70);
+    mpu1.setXGyroOffset(-629);
   
+    mpu1.setYGyroOffset(206);
   
-  mpu.setZGyroOffset(-8);
-  
-  
-   mpu1.initialize(); //MPU-2 = 0x69
-  
-  
-  mpu1.setXAccelOffset(497);
-  
-  
-  mpu1.setYAccelOffset(1703);
-  
-  
-  mpu1.setZAccelOffset(1148);
-  
-  
-  mpu1.setXGyroOffset(-629);
-  
-  
-  mpu1.setYGyroOffset(206);
-  
-  
-  mpu1.setZGyroOffset(-8);
+    mpu1.setZGyroOffset(-8);
   
   
   Normalement apres avoir televerser le programme "....." votre dronne est prét a voler.
@@ -299,38 +286,40 @@ Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre un
 
 Pour pouvoir les utiliser il faut declarer les interruptions le code suivant indique a l'arduino uno que les pins digital 8,9,10,11  vons etre uitliser comme interruptions en modes "Changes".  
    
-   //N°bit = 76543210   //table de vérité "ou" = "1&0=1" "0&0=0" "1&1=1 
+     //N°bit = 76543210   //table de vérité "ou" = "1&0=1" "0&0=0" "1&1=1 
    
    
-   //PCIRC = 00000000;
+    //PCIRC = 00000000;
    
    
-   //PCMSK0 = 00000000;
+    //PCMSK0 = 00000000;
    
    
- PCICR  |= (1 << PCIE0); //PCIRC = 00000001; on utilise le comparateur "ou" est on decale de 0 la valeur 1 dans PCICR  
+    PCICR  |= (1 << PCIE0); //PCIRC = 00000001; on utilise le comparateur "ou" est on decale de 0 la valeur 1 dans PCICR  
    
    
- PCMSK0 |= (1 << PCINT0); //  PCMSK0 = 00000001; ................................................................PCMSK0 D8
+    PCMSK0 |= (1 << PCINT0); //  PCMSK0 = 00000001; ................................................................PCMSK0 D8
    
    
- PCMSK0 |= (1 << PCINT1); //  PCMSK0 = 00000011; on utilise le comparateur "ou" est on decale de 1 la valeur 1 dans PCMSK0 D9
+    PCMSK0 |= (1 << PCINT1); //  PCMSK0 = 00000011; on utilise le comparateur "ou" est on decale de 1 la valeur 1 dans PCMSK0 D9
    
    
- PCMSK0 |= (1 << PCINT2); //  PCMSK0 = 00000111; on utilise le comparateur "ou" est on decale de 2 la valeur 1 dans PCMSK0 D10
+    PCMSK0 |= (1 << PCINT2); //  PCMSK0 = 00000111; on utilise le comparateur "ou" est on decale de 2 la valeur 1 dans PCMSK0        D10
    
    
- PCMSK0 |= (1 << PCINT3); // PCMSK0 = 00000011; on utilise le comparateur "ou" est on decale de 3 la valeur 1 dans PCMSK0 D11
+    PCMSK0 |= (1 << PCINT3); // PCMSK0 = 00001111; on utilise le comparateur "ou" est on decale de 3 la valeur 1 dans PCMSK0 D11
    
 
 Pour bien comprendre le fonctionnement il faut imaginer un octet superposer a un autre octet ces pour sa que le "ou" est un comparateur de bit je vais donner des exemples
    
    
-   PCMSK0 = 00000000; // le registre PCMSK0 se représente sur un octet 
    
    
-    
-    
+   
+   
+    PCMSK0 = 00000000; // le registre PCMSK0 se représente sur un octet 
+   
+   
     l'orsque nous faisons |= (1 << PCINT0) il se passe la chose suivante.
     
     
