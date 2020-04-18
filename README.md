@@ -142,7 +142,7 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
   Si vous avez le matérielle nécessaire pour réaliser des circuit imprimée est vous voulez transferez le circuit sur la plaque en cuivre en utilisant de l'acetone et alcool ou en utilisant le transfert par chaleur avec un fer a repasse imprimée avec une imprimante laser les fichiers "PCB-FC.pdf" et "PCB-power distrib.pdf". Les deux autres fichier "PCB-FC-négatif.pdf" et "PCB-power distrib-négatif.pdf" sont utile si vous faites vos circuit imprimée avec une insoleuse. Si vous n'avez pas le materielle nécessaire suivez les instructions suivante.
   
  
- Prennez votre radiocommande brancher le cable de bind si vous avez une Flysky fs-i6 allumez la et restez appuyez sur le bouton "Bind key" cela va permettre de crée la liaison entre la radiocommande est le recepteur puis restez appuyez sur le bouton "OK" qui vous méne vers un menu avec deux sous menu "System setup" et "Functions setup" déplacer vous avec les touches "up" et "down" sur le sous menu "Functions setup" et cliquez sur "OK" puis déplacez vous sur "Display" est cliquez "OK" est la vous verrez vos channels. Bougez vos commandes est vous verrez quel commande correspond a quel channel. 
+ -Prennez votre radiocommande brancher le cable de bind si vous avez une Flysky fs-i6 allumez la et restez appuyez sur le bouton "Bind key" cela va permettre de crée la liaison entre la radiocommande est le recepteur puis restez appuyez sur le bouton "OK" qui vous méne vers un menu avec deux sous menu "System setup" et "Functions setup" déplacer vous avec les touches "up" et "down" sur le sous menu "Functions setup" et cliquez sur "OK" puis déplacez vous sur "Display" est cliquez "OK" est la vous verrez vos channels. Bougez vos commandes est vous verrez quel commande correspond a quel channel. 
  
  Si vous avez une RaDio Mode1 vous devriez avoir le "YAW" CH1, le "PITCH" CH2, les "GAZ" CH3, le "ROLL" CH4. Maintenant nous savons quel channel du recepteur transmet quel commande. 
  
@@ -150,7 +150,7 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  
  
  
- - ARDUINO UNO.
+ -ARDUINO UNO.
  
 le + du recpteur au +5v
 
@@ -164,7 +164,7 @@ CH3"GAZ" a la pin digital 10.
  
 CH4"ROLL" a la pin digital 11. 
  
- - ARDUINO MEGA PRO MINI.
+ -ARDUINO MEGA PRO MINI.
  
  le + du recpteur au +5
 
@@ -179,7 +179,7 @@ CH4"ROLL" a la pin digital 11.
  CH4"ROLL"  a la pin digital 10.
  
 
-Maintenant nous passons au montage des deux gyroscopes tous d'abord imprimer les deux petits support qui se trouve dans le fichier "...." visé dessus les gyroscopes puis collé les deux support sur la plaque que vous avez imprimé avec le fichier "N.basdrone.stl". la position des GyRo sur la plaque n'est pas important mais le sens des gyroscopes doit étre respecté comme vous pouvais le voir sur l'image ci-dessous aidé vous en utilisant les petites fléches inscrites sur les GyRo.
+-Maintenant nous passons au montage des deux gyroscopes tous d'abord imprimer les deux petits support qui se trouve dans le fichier "...." visé dessus les gyroscopes puis collé les deux support sur la plaque que vous avez imprimé avec le fichier "N.basdrone.stl". la position des GyRo sur la plaque n'est pas important mais le sens des gyroscopes doit étre respecté comme vous pouvais le voir sur l'image ci-dessous aidé vous en utilisant les petites fléches inscrites sur les GyRo.
   
   <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/DR.png" width="200" height="125">
  
@@ -187,9 +187,9 @@ Maintenant nous passons au montage des deux gyroscopes tous d'abord imprimer les
  des deux "MPU" sur le +3.3V de l'arduino, les deux "GND" sur un GND, les deux "SDA"(Serial data) sur "A4" les deux "SCL"(Serial clock line) sur "A5". Pour plus de solidité est éviter l'arrachement d'un fils réunissez les et faite une trésse.
  
  
-  Il reste alors les ESC a installée est a racorder a l'arduino, regarder l'image ci-dessous est vous verrez les deux fils d'alimentation (+12v,-) le fils signaux avec son gnd puis les trois fils moteur, rappeller vous nos moteur on trois phases et tous les moteurs de notre drone ne tourne pas dans le méme sens regarder de nouveau l'image ou il ya les deux gyroscopes vous verrez quel moteur tourne dans quel sens, horaire ou anti-horaire. Pour inverser le sens d'un moteur il suffit d'inverser le branchement des fils moteur. Maintenant nous allons souder aux arduino les fils du signaux de chaque ESC . 
+  -Il reste alors les ESC a installée est a racorder a l'arduino, regarder l'image ci-dessous est vous verrez les deux fils d'alimentation (+12v,-) le fils signaux avec son gnd puis les trois fils moteur, rappeller vous nos moteur on trois phases et tous les moteurs de notre drone ne tourne pas dans le méme sens regarder de nouveau l'image ou il ya les deux gyroscopes vous verrez quel moteur tourne dans quel sens, horaire ou anti-horaire. Pour inverser le sens d'un moteur il suffit d'inverser le branchement des fils moteur. Maintenant nous allons souder aux arduino les fils du signaux de chaque ESC . 
   
-  - ARDUINO UNO.
+  -ARDUINO UNO.
   
   ESC.moteur1 a la pin digital 4 
   
@@ -199,7 +199,7 @@ Maintenant nous passons au montage des deux gyroscopes tous d'abord imprimer les
   
   ESC.moteur4 a la pin digital 7  
   
-  - ARDUINO MEGA PRO MINI.  
+  -ARDUINO MEGA PRO MINI.  
   
   le ESC.moteur1 a la pin digital 26 
   
@@ -221,6 +221,124 @@ Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre un
  <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/PBD.png" width="200" height="125">
  
  - Programme
+ 
+ -Le fichier "ESCALIB.ino" va nous permettre de calibrer les ESC , une fois le programme televerser ouvré le Serial  taper "1" puis "Entrée", branchez la batterie puis taper "0" la vous entendrez trois "beep" cela signifie que votre batterie est une 3S pour finir rentrer "2" dans le Serial, vous verrez vos moteur montez en puissance jusqu'a leur puissance maximale puis ils éteignent . Si vous avez l'aruino mega pro mini il faut changer la declarations des pin en mode OUTPUT "DDRD |= B11110000;" en  "DDRA  |= B11110000;" et changer toutes l'activation des pins a l'état haut "PORTD |= mot;" en "PORTA |= mot;" et a l'etat bas 
+ "PORTD &=  B00000000;" en "PORTA &=  B00000000;"
+ 
+ 
+ Que fait notre programme ESCALIB.ino ?
+ 
+ L'orsque vous rentrez  "1" l'arduino envoie au ESC  chaque 8ms une impulsion de 2000us qui est la valeur maximaxe ce qui va mettre l'ESC en mode programmation puis quand on rentre "0" l'arduino envoie des impulsions de 1000us ce qui indique au ESC quel largeur d'impulsion est égale au moteur eteint, donc 2000us est égale a la vitesse maximale et 1000us au moteur eteint. Puis quand on rentre "2" on incremente une valeur a l'impulsion minimale j'usqu'a ateindre sa valeur maximale puis on retourne a une l'argeur d'impulsion de 1000us. 
+ 
+ 
+ -Maintenant que nous avons nos ESC calibré rendez vous sur ce lien https://github.com/jrowberg/i2cdevlib est télécharger les fichier, dans tous ces fichier il ya deux bibliothéque qui nous intéresse "I2Cdev.h" et MPU6050.h une fois que vous les avez intégré dans votre IDE, télecharger le programme ecrit par Luis RODENA qui se trouve dans le fichier "...." qui va nous permettre de calibrer nos deux Gyro. 
+ 
+ 
+ Pour le faire il faut d'abord bien positionner votre drone a plat en  utilisent un niveau a bulle, une fois qu'il est bien a plat on va pouvoir televerser le programme dans notre arduino. Mais nous avons deux Gyro a calibrer nous allons les calibrer un a la fois pour savoir lequel des deux nous sommes entrein de calibrer il faut connaitre l'adresse de chaque Gyro notre MPU-1 a pour adresse "0x68" et MPU-2 "0x69". Regarder le programme vous verrez cette ligne "MPU6050 accelgyro(0x69);" pour pouvoir changer de Gyro il suffit de changer l'adresse qui est entre parenthése par l'adrresse de votre Gyro.
+ 
+ 
+ Une fois que vous avez choisi l'adresse téleverser le programme, pour le lancer ouvré le Serial  est rentré un caractére au hasard aprés une trentaine de seconde vous verrez apparaitre une ligne avec ecrit "Sensor readings with offsets" suivie de six nombre qui doivent etre proche de la suite suivante "0 0 16384 0 0 0",la ligne suivante ou il ya ecrit "Your offsets" suivie de six nombre "-3771 -1100 1106 -10 70 -8" se sont vos valeurs de calibration pour les trois axes de l'accelerométre est les trois axes du gyroscopes. Faites cette opération pour les deux Gyro puis ouvrez le fichier "...." si vous utilisez l'arduin uno ou "...." pour l'arduino mega pro mini est remplacer les six valeurs suivante pour chaque Gyro par vos valeurs d'offset.  
+ 
+ 
+ mpu.initialize(); //MPU-1 = 0x68
+ mpu.setXAccelOffset(-3771);
+  mpu.setYAccelOffset(-1100);
+  mpu.setZAccelOffset(1106);
+  mpu.setXGyroOffset(-10);
+  mpu.setYGyroOffset(70);
+  mpu.setZGyroOffset(-8);
+  
+  
+   mpu1.initialize(); //MPU-2 = 0x69
+  mpu1.setXAccelOffset(497);
+  mpu1.setYAccelOffset(1703);
+  mpu1.setZAccelOffset(1148);
+  mpu1.setXGyroOffset(-629);
+  mpu1.setYGyroOffset(206);
+  mpu1.setZGyroOffset(-8);
+  
+  
+  Normalement apres avoir televerser le programme "....." votre dronne est prét a voler.
+  
+  
+  
+  - Explication Programme
+  
+  Notre programme recoit les commandes ordonné par notre radiocommande qui lui donne un angle a atteindre (Consigne) est les donnés du gyroscopes qui lui donne sa position actuelle est a la vitesse a laquelle le drone se déplace autour de ses trois axes.
+  
+  
+  -lecture des données recus par le recepteur
+  
+  
+  Pour calculer l'angle a atteindre il faut d'abord lire la largeur d'impulsion de chaque CH rappeller vous on en a parler dans la partie " Radiocommande & recepteur" pour lire la largeur on va utiliser les interruptions en mode "Changes" ce qui veut dire quells activent l'orsque l'état de la CH passent de l'etat haut(5v) a bas(0v) ou de bas a haut.  Quand une interruption s'activent elle est prioritaire sur notre programme et lance une routine execution qui va faire les calculs pour connaitre la largeur d'impulsion. Une fois que le code de la routine est executer le programme reprend ou il ces arrété, si le code de la routine est trop volumineux votre programme ne fonctionnera pas car elle sera réappeller alors que l'execution du code n'est toujour pas finit.
+  
+
+Pour pouvoir les utiliser il faut declarer les interruptions le code suivant indique a l'arduino uno que les pins digital 8,9,10,11  vons etre uitliser comme interruptions en modes "Changes".  
+   
+   //N°bit = 76543210   //table de vérité "ou" = "1&0=1" "0&0=0" "1&1=1 
+   
+   
+   //PCIRC = 00000000;
+   
+   
+   //PCMSK0 = 00000000;
+   
+   
+   PCICR  |= (1 << PCIE0); //PCIRC = 00000001; on utilise le comparateur "ou" est on decale de 0 la valeur 1 dans PCICR  
+   
+   
+   PCMSK0 |= (1 << PCINT0); //  PCMSK0 = 00000001; ................................................................ PCMSK0 D8
+   
+   
+   PCMSK0 |= (1 << PCINT1); //  PCMSK0 = 00000011; on utilise le comparateur "ou" est on decale de 1 la valeur 1 dans PCMSK0 D9
+   
+   
+   PCMSK0 |= (1 << PCINT2); //  PCMSK0 = 00000111; on utilise le comparateur "ou" est on decale de 2 la valeur 1 dans PCMSK0 D10
+   
+   
+   PCMSK0 |= (1 << PCINT3); // PCMSK0 = 00000011; on utilise le comparateur "ou" est on decale de 3 la valeur 1 dans PCMSK0 D11
+   
+
+Pour bien comprendre le fonctionnement il faut imaginer un octet superposer a un autre octet ces pour sa que le "ou" est un comparateur de bit je vais donner des exemples
+   
+   
+   PCMSK0 = 00000000; // le registre PCMSK0 se représente sur un octet 
+   
+   
+   l'orsque nous faisons |= (1 << PCINT0) il se passe la chose suivante.
+    
+    
+    PCMSK0 = 00000000;
+                 
+                 
+                 |=          PCMSK0 =  00000001;
+            
+            
+            00000001;
+     
+    l'orsque nous faisons |= (1 << PCINT1) il se passe la chose suivante.
+             
+    
+    PCMSK0 = 00000001;
+                 
+                 
+                 |=          PCMSK0 =  00000011
+             
+             
+             00000010;
+                 
+    
+    
+   
+   
+  
+  
+ 
+ 
+ 
+ 
+ 
+ 
  
  
 
