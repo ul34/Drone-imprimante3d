@@ -298,16 +298,16 @@ Pour pouvoir les utiliser il faut declarer les interruptions le code suivant ind
     PCICR  |= (1 << PCIE0); //PCIRC = 00000001; on utilise le comparateur "ou" est on decale de 0 la valeur 1 dans PCICR  
    
    
-    PCMSK0 |= (1 << PCINT0); //  PCMSK0 = 00000001; ................................................................PCMSK0 D8
+    PCMSK0 |= (1 << PCINT0); //PCMSK0 = 00000001; ................................................................PCMSK0 D8
    
    
-    PCMSK0 |= (1 << PCINT1); //  PCMSK0 = 00000011; on utilise le comparateur "ou" est on decale de 1 la valeur 1 dans PCMSK0 D9
+    PCMSK0 |= (1 << PCINT1); //PCMSK0 = 00000011; on utilise le comparateur "ou" est on decale de 1 la valeur 1 dans PCMSK0 D9
    
    
-    PCMSK0 |= (1 << PCINT2); //  PCMSK0 = 00000111; on utilise le comparateur "ou" est on decale de 2 la valeur 1 dans PCMSK0        D10
+    PCMSK0 |= (1 << PCINT2); //PCMSK0 = 00000111; on utilise le comparateur "ou" est on decale de 2 la valeur 1 dans PCMSK0 D10
    
    
-    PCMSK0 |= (1 << PCINT3); // PCMSK0 = 00001111; on utilise le comparateur "ou" est on decale de 3 la valeur 1 dans PCMSK0 D11
+    PCMSK0 |= (1 << PCINT3); //PCMSK0 = 00001111; on utilise le comparateur "ou" est on decale de 3 la valeur 1 dans PCMSK0 D11
    
 
 Pour bien comprendre le fonctionnement il faut imaginer un octet superposer a un autre octet ces pour sa que le "ou" est un comparateur de bit je vais donner des exemples
