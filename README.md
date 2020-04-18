@@ -240,21 +240,45 @@ Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre un
  Une fois que vous avez choisi l'adresse téleverser le programme, pour le lancer ouvré le Serial  est rentré un caractére au hasard aprés une trentaine de seconde vous verrez apparaitre une ligne avec ecrit "Sensor readings with offsets" suivie de six nombre qui doivent etre proche de la suite suivante "0 0 16384 0 0 0",la ligne suivante ou il ya ecrit "Your offsets" suivie de six nombre "-3771 -1100 1106 -10 70 -8" se sont vos valeurs de calibration pour les trois axes de l'accelerométre est les trois axes du gyroscopes. Faites cette opération pour les deux Gyro puis ouvrez le fichier "...." si vous utilisez l'arduin uno ou "...." pour l'arduino mega pro mini est remplacer les six valeurs suivante pour chaque Gyro par vos valeurs d'offset.  
  
  
- mpu.initialize(); //MPU-1 = 0x68
- mpu.setXAccelOffset(-3771);
+  mpu.initialize(); //MPU-1 = 0x68
+  
+  
+  mpu.setXAccelOffset(-3771);
+  
+  
   mpu.setYAccelOffset(-1100);
+  
+  
   mpu.setZAccelOffset(1106);
+  
+  
   mpu.setXGyroOffset(-10);
+  
+  
   mpu.setYGyroOffset(70);
+  
+  
   mpu.setZGyroOffset(-8);
   
   
    mpu1.initialize(); //MPU-2 = 0x69
+  
+  
   mpu1.setXAccelOffset(497);
+  
+  
   mpu1.setYAccelOffset(1703);
+  
+  
   mpu1.setZAccelOffset(1148);
+  
+  
   mpu1.setXGyroOffset(-629);
+  
+  
   mpu1.setYGyroOffset(206);
+  
+  
   mpu1.setZGyroOffset(-8);
   
   
@@ -284,19 +308,19 @@ Pour pouvoir les utiliser il faut declarer les interruptions le code suivant ind
    //PCMSK0 = 00000000;
    
    
-   PCICR  |= (1 << PCIE0); //PCIRC = 00000001; on utilise le comparateur "ou" est on decale de 0 la valeur 1 dans PCICR  
+ PCICR  |= (1 << PCIE0); //PCIRC = 00000001; on utilise le comparateur "ou" est on decale de 0 la valeur 1 dans PCICR  
    
    
-   PCMSK0 |= (1 << PCINT0); //  PCMSK0 = 00000001; ................................................................ PCMSK0 D8
+ PCMSK0 |= (1 << PCINT0); //  PCMSK0 = 00000001; ................................................................PCMSK0 D8
    
    
-   PCMSK0 |= (1 << PCINT1); //  PCMSK0 = 00000011; on utilise le comparateur "ou" est on decale de 1 la valeur 1 dans PCMSK0 D9
+ PCMSK0 |= (1 << PCINT1); //  PCMSK0 = 00000011; on utilise le comparateur "ou" est on decale de 1 la valeur 1 dans PCMSK0 D9
    
    
-   PCMSK0 |= (1 << PCINT2); //  PCMSK0 = 00000111; on utilise le comparateur "ou" est on decale de 2 la valeur 1 dans PCMSK0 D10
+ PCMSK0 |= (1 << PCINT2); //  PCMSK0 = 00000111; on utilise le comparateur "ou" est on decale de 2 la valeur 1 dans PCMSK0 D10
    
    
-   PCMSK0 |= (1 << PCINT3); // PCMSK0 = 00000011; on utilise le comparateur "ou" est on decale de 3 la valeur 1 dans PCMSK0 D11
+ PCMSK0 |= (1 << PCINT3); // PCMSK0 = 00000011; on utilise le comparateur "ou" est on decale de 3 la valeur 1 dans PCMSK0 D11
    
 
 Pour bien comprendre le fonctionnement il faut imaginer un octet superposer a un autre octet ces pour sa que le "ou" est un comparateur de bit je vais donner des exemples
@@ -305,7 +329,9 @@ Pour bien comprendre le fonctionnement il faut imaginer un octet superposer a un
    PCMSK0 = 00000000; // le registre PCMSK0 se représente sur un octet 
    
    
-   l'orsque nous faisons |= (1 << PCINT0) il se passe la chose suivante.
+    
+    
+    l'orsque nous faisons |= (1 << PCINT0) il se passe la chose suivante.
     
     
     PCMSK0 = 00000000;
