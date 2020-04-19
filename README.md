@@ -164,6 +164,7 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  
     CH4"ROLL" a la pin digital 11. 
  
+    
     -ARDUINO MEGA PRO MINI.
  
     le + du recpteur au +5
@@ -275,7 +276,7 @@ Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre un
   
   - Explication Programme
   
-  Notre programme recoit les commandes ordonné par notre radiocommande qui lui donne un angle a atteindre (Consigne) est les donnés du gyroscopes qui lui donne sa position actuelle est a la vitesse a laquelle le drone se déplace autour de ses trois axes.
+  Notre programme recoit les commandes ordonné par notre radiocommande qui lui donne un angle a atteindre (Consigne) est les donnés du gyroscopes qui lui donne sa position actuelle est a la vitesse a laquelle le drone se déplace autour de ses trois axes,pour que le drone suive la consigne quon lui donne nous allons utiliser un régulateur P.I.D qui en fonction de la vitesse de déplacement du drone de sa position et de la consigne va distribuer la puissance des moteurs pour atteindre la consigne.
   
   
   -lecture des données recus par le recepteur
@@ -295,19 +296,19 @@ Pour pouvoir les utiliser il faut declarer les interruptions le code suivant ind
     //PCMSK0 = 00000000;
    
    
-    PCICR  |= (1 << PCIE0); //PCIRC = 00000001; on utilise le comparateur "ou" est on decale de 0 la valeur 1 dans PCICR  
+    PCICR  |= (1 << PCIE0); //PCIRC = 00000001; on met le bit 0 du registre PCICR a 1 
    
    
-    PCMSK0 |= (1 << PCINT0); //PCMSK0 = 00000001; ................................................................PCMSK0 D8
+    PCMSK0 |= (1 << PCINT0); //PCMSK0 = 00000001; on met le bit 0 du registre PCMSK0 a 1 Pin digital 8
    
    
-    PCMSK0 |= (1 << PCINT1); //PCMSK0 = 00000011; on utilise le comparateur "ou" est on decale de 1 la valeur 1 dans PCMSK0 D9
+    PCMSK0 |= (1 << PCINT1); //PCMSK0 = 00000011; on met le bit 1 du registre PCMSK0 a 1 Pin digital 9
    
    
-    PCMSK0 |= (1 << PCINT2); //PCMSK0 = 00000111; on utilise le comparateur "ou" est on decale de 2 la valeur 1 dans PCMSK0 D10
+    PCMSK0 |= (1 << PCINT2); //PCMSK0 = 00000111; on met le bit 2 du registre PCMSK0 a 1 Pin digital 10
    
    
-    PCMSK0 |= (1 << PCINT3); //PCMSK0 = 00001111; on utilise le comparateur "ou" est on decale de 3 la valeur 1 dans PCMSK0 D11
+    PCMSK0 |= (1 << PCINT3); //PCMSK0 = 00001111; on met le bit 3 du registre PCMSK0 a 1 Pin digital 11
    
 
 Pour bien comprendre le fonctionnement il faut imaginer un octet superposer a un autre octet ces pour sa que le "ou" est un comparateur de bit je vais donner des exemples
@@ -320,7 +321,7 @@ Pour bien comprendre le fonctionnement il faut imaginer un octet superposer a un
     PCMSK0 = 00000000; // le registre PCMSK0 se représente sur un octet 
    
    
-    l'orsque nous faisons |= (1 << PCINT0) il se passe la chose suivante.
+    l'orsque nous faisons |= (1 << PCINT0) il se passe la chose suivante nous créons un octet et nous faisons se décaler vers la     gauche la valeur 1 de 0 bit "00000001" et on compare notre octet a l'octet du registre PCMSK0.
     
     
     PCMSK0 = 00000000;
@@ -331,7 +332,7 @@ Pour bien comprendre le fonctionnement il faut imaginer un octet superposer a un
             
             00000001;
      
-    l'orsque nous faisons |= (1 << PCINT1) il se passe la chose suivante.
+    l'orsque nous faisons |= (1 << PCINT1) il se passe la chose suivante nous créons un octet et nous faisons se décaler vers la     gauche la valeur 1 de 1 bit "00000010" et on compare notre octet a l'octet du registre PCMSK0.
              
     
     PCMSK0 = 00000001;
@@ -341,6 +342,114 @@ Pour bien comprendre le fonctionnement il faut imaginer un octet superposer a un
              
              
              00000010;
+             
+             
+             
+             
+             
+Maintenant que nous avons déclarée nos interruptions au pins 8,9,10,11 nous pouvons allez dans notre routine d'execution et taper notre code pour calculer la largeur d'impulsion.
+
+
+     ISR(PCINT0_vect) //routine execution qui s'activent a chaque changement d'etat
+     {
+    current_time = micros(); // on lance un timer et on stoke T0
+
+     
+    if (PINB & B00000001) {  // SI pin digital 8 est a l'etat haut on execute le code entre les accolades                                       
+        if (previous_state[0] == LOW) { // Si la variable previous_state[0] est égale a LOW                 
+            previous_state[0] = HIGH;  // previous_state[0] est égale a HIGH                      
+            timer[0]          = current_time; // on stoke T0 dans  timer[0]              
+        }
+    } else if(previous_state[0] == HIGH) { // SI pin 8 a l'etat haut est faut et que previous_state[0]==HIGH              
+        previous_state[0] = LOW;  // previous_state[0] est égale a LOW                              
+        pulse_duration[0] = current_time - timer[0]; Durée a l'état haut T1-T0 
+    }
+    }
+    
+ Pour bien comprendre imaginés que la pin D8 est a l'état bas(LOW) quand on allume le drone la pin D8 passe a l'état haut alors la routine d'execution s'activent on stoke dans la variable "current_time" le temps actuelle prenont une valeur arbitraire a titre d'exemple "current_time = 1000us" aprés nous testons une condition Si pin D8 est a l'etat haut on execute le code entre les accolades dans ces accolades il ya un autre test de condition Si la variable "previous_state[0]" est a l'etat bas et elle les car nous venons juste d'allumer l'arduino est la variable est initialiser a 0 soit etat bas on passe alors "previous_state[0]" a l'etat haut et on stoke le temps actuelle dans timer[0] soit 1000us,  le prochain test de condition "else if(previous_state[0] == HIGH)" est faux et n'execute pas le code entre les accollades car les test de condition est fault car "if (PINB & B00000001)" est vrai. Puis nous sortons de la routine d'exe est l'arduino recommence a executer le code la ou il c'était arrété. L'orsque la pin D8 change d'etat a nouveau sa veut dire pour nous quel va passer de l'état haut a l'etat bas la routine exe se relance on stoke comme a chaque nouvelle rentré dans la routine le temps actuelle dans "current_time = 2500us" cette fois si la condition "if (PINB & B00000001)" est fausse donc le code entre les accolades ne s'execute pas mais la condition "else if(previous_state[0] == HIGH)" est vrai car la premiere condition est fausse est "previous_state[0]" avais été mis a l'etat haut "HIGH" alors on execute le code entre accolades on repasse  "previous_state[0]" a l'etat bas "LOW" est ont soustrait le temps stoker dans "timer[0] = 1000us" l'or de la premiére activation de la routine au temps actuelle soit "current_time = 1500us" ce qui fait "pulse_duration[0] = 2500-1000;", maintenant nous pouvons connaitre la largeur d'impulsion de chaque CH ROLL, PITCH, YAW, GAZ.
+ 
+ 
+ 
+ Rappelez vous notre recepteur envoie a notre controleur de vol des largeurs d'impulsion entre 1000us et 2000us l'orsque vous ne touchez pas les commandes du PITCH, ROLL, YAW de votre radiocommande la largeur d'impulsion est de 1500us ce qui veut dire que vous demandez a votre drone d'étre a plat "PITCH = 0°, ROLL = 0°, YAW = 0°/S" pour les GAZ 1000us signifie GAZ = minimum et 2000 us GAZ = maximum. Maintenant nous allons voir le code qui permet de transformez les largeurs d'impulsions en consigne.
+ 
+ 
+     void consigne(){
+  
+           ConsG = 0; // A chaque boucle du programme on met la variable ConsG = "GAZ" a 0
+          ConsP = 0;  // A chaque boucle du programme on met la variable  ConsP = "PITCH" a 0
+          ConsR = 0; // A chaque boucle du programme on met la variable  ConsR = "ROLL" a 0
+         ConsY = 0; //  // A chaque boucle du programme on met la variable  ConsY = "YAW" a 0
+  
+    chanel1 =  pulse_duration[2]; // on stoke la largeur d'impulsion CH "GAZ" dans la variable chanel1 
+    chanel2 =  pulse_duration[1]; // on stoke la largeur d'impulsion CH "PITCH" dans la variable chanel2 
+    chanel3 =  pulse_duration[3]; // on stoke la largeur d'impulsion CH "ROLL" dans la variable chanel3 
+    chanel4 =  pulse_duration[0]; // on stoke la largeur d'impulsion CH "YAW" dans la variable chanel4
+  
+    if (chanel1 < 1000) chanel1 = 1000; // on limite les valeurs entre 1000 et 2000
+     if (chanel1 > 1800) chanel1 = 1800;
+     if (chanel2 < 1000) chanel2 = 1000;
+     if (chanel2 > 2000) chanel2 = 2000;
+    if (chanel3 < 1000) chanel3 = 1000;
+    if (chanel3 > 2000) chanel3 = 2000;
+    if (chanel4 < 1000) chanel4 = 1000;
+    if (chanel4 > 2000) chanel4 = 2000;
+    
+  
+  
+  Maintenant qu'on a stoké les valeurs du "PITCH, ROLL, YAW, GAZ" est qu'on a limité les valeurs dans un intervalle [1000;2000]  on va séparé les intervalles en deux parties " ROLL = [1000<=gauche<1500>droite<=2000], PITCH = [1000<=avant<1500>arriére<=2000] , YAW = [1000<=droite<1500>gauche<=2000] pour les GAZ nous n'avons pas besoins de separer en deux l'intervalle. Comme le signal a du bruit il n'est pas parfaitement constant a 1500 ces pour ca que nous laisons une marge de 16us.
+  
+  
+    //gaz
+    if (chanel1 >1008){ // Si strictement plus grand que 10008 allumage des moteurs
+    ConsG = chanel1;
+     }
+     
+  
+    //Pitch
+    if (chanel2 >1508){ // SI strictement plus grand que 1508 "PITCH" vers l'arriére arriére
+     ConsP = (chanel2-1508);
+     }else if (chanel2 < 1492){ //sinon SI strictement plus petit que 1492 "PITCH" vers l'avant
+     ConsP = (chanel2-1492);
+     }
+    
+      //Roll
+    if (chanel3 >1508){ // SI strictement plus grand que 1508 "ROLL" vers la droite 
+     ConsR = (chanel3-1508);
+     }else if (chanel3 < 1492){ //sinon SI strictement plus petit que 1492 "ROLL" vers la gauche
+     ConsR = (chanel3-1492);
+     }
+     
+       //Yaw
+    if (chanel4 >1508){ // SI strictement plus grand que 1508 "YAW" vers la  gauche 
+     ConsY = (chanel4-1508);
+     }else if (chanel4 < 1492){  //sinon SI strictement plus petit que 1492 "YAW" vers la droite
+     ConsY = (chanel4-1492);
+     }
+     
+     
+     
+   Si sur votre radiocommande vous poussez le stick du Roll sur la droite et que la largeur d'impulsion dépassent 1508, on soustrait 1508 a la valeur recu ce qui nous donne une  Consigne qu'il faut convertir en angle a atteindre et nous savons que la largeur d'impulsion et au maximum 2000us il faut alors definir quel angle correspond a 2000us sa sera l'inclinaison maximale du drone.  Imaginez maintenant que vous poussez le stick du ROLL a droite en bout de course "chanel3 = 2000" ce qui fait      "ConsR = 2000-1508 = 492" est nous voulons que cette valeur représente 30.75° alors il faut que quand notre gyroscope indique 30.75°, ConsR soit égale a 0 alors si notre drone a une inclinaison de 30.75° il faut que l'angle soit multiplier par un coefficient et que le produit de cette multiplication soit égale a 492. Voici le calcul "492/Anglemax = coefficient"  si dessous vous avez un exemple les variables anglemaxP et  anglemaxR   stocke le  produit des multiplication entre les coefficients est l'angle actuelle pour l'axe du "ROLL" et du "PITCH" puis on soustrait les produit aux consigne et enfin on divise par trois pour limiter la vitesse de déplacement autour des axes a 164 °/S "492/3 = 164". Pour l'axe du "YAW" on ne fixe pas d'angle maximum mes une vitesse de deplacement maximale. 
+   
+   
+     anglemaxP = 16 * angleP; // 2000-1508 = 492 , 492/16 = 30.75°, 492/30.75 = 16
+     anglemaxR = 16 * angleR;
+      
+      ConsP -= anglemaxP ;
+      ConsP /= 3;  // limitation de la vitesse de deplacement a 164°/S "492/3=164"
+      ConsR -=  anglemaxR;
+      ConsR /= 3;
+      ConsY /= 3;
+
+ 
+ 
+ 
+
+
+
+
+
+
+          
                  
     
     
