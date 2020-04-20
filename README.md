@@ -428,7 +428,7 @@ Maintenant que nous avons déclarée nos interruptions au pins 8,9,10,11 nous po
      
      
      
-   Si sur votre radiocommande vous poussez le stick du Roll sur la droite et que la largeur d'impulsion dépassent 1508, on soustrait 1508 a la valeur recu ce qui nous donne une  Consigne qu'il faut convertir en angle a atteindre et nous savons que la largeur d'impulsion et au maximum 2000us il faut alors definir quel angle correspond a 2000us sa sera l'inclinaison maximale du drone.  Imaginez maintenant que vous poussez le stick du ROLL a droite en bout de course "chanel3 = 2000" ce qui fait      "ConsR = 2000-1508 = 492" est nous voulons que cette valeur représente 30.75° alors il faut que quand notre gyroscope indique 30.75°, ConsR soit égale a 0 alors si notre drone a une inclinaison de 30.75° il faut que l'angle soit multiplier par un coefficient et que le produit de cette multiplication soit égale a 492. Voici le calcul "492/Anglemax = coefficient"  si dessous vous avez un exemple les variables anglemaxP et  anglemaxR   stocke le  produit des multiplication entre les coefficients est l'angle actuelle pour l'axe du "ROLL" et du "PITCH" puis on soustrait les produit aux consigne et enfin on divise par trois pour limiter la vitesse de déplacement autour des axes a 164 °/S "492/3 = 164". Pour l'axe du "YAW" on ne fixe pas d'angle maximum mes une vitesse de deplacement maximale. 
+   Si sur votre radiocommande vous poussez le stick du Roll sur la droite et que la largeur d'impulsion dépassent 1508, on soustrait 1508 a la valeur recu ce qui nous donne une  Consigne qu'il faut convertir en angle a atteindre et nous savons que la largeur d'impulsion et au maximum 2000us il faut alors definir quel angle correspond a 2000us sa sera l'inclinaison maximale du drone.  Imaginez maintenant que vous poussez le stick du ROLL a droite en bout de course "chanel3 = 2000" ce qui fait      "ConsR = 2000-1508 = 492" est nous voulons que cette valeur représente 30.75° alors il faut que quand notre gyroscope indique 30.75°, ConsR soit égale a 0 alors si notre drone a une inclinaison de 30.75° il faut que l'angle soit multiplier par un coefficient et que le produit de cette multiplication soit égale a 492. Voici le calcul "492/Anglemax = coefficient"  si dessous vous avez un exemple les variables anglemaxP et  anglemaxR   stocke le  produit des multiplication entre les coefficients est l'angle actuelle pour l'axe du "ROLL" et du "PITCH" puis on soustrait les produit aux consigne et enfin on divise par trois pour limiter la vitesse de déplacement autour des axes a 164 °/S "492/3 = 164". Pour l'axe du "YAW" on ne fixe pas d'angle maximale mes une vitesse de deplacement maximale. 
    
    
      anglemaxP = 16 * angleP; // 2000-1508 = 492 , 492/16 = 30.75°, 492/30.75 = 16
@@ -439,7 +439,98 @@ Maintenant que nous avons déclarée nos interruptions au pins 8,9,10,11 nous po
       ConsR -=  anglemaxR;
       ConsR /= 3;
       ConsY /= 3;
+      
+      
+ Maintenat que nous avons les consignes de nos trois axes nous allons utiliser un régulateur P.I.D pour controler la position du drone mais d'abord je vais vous expliquer le fonctionnement de ce régulateur.
+ 
+   le régulateur P.I.D va calculer les erreurs Proportionnelle.intégrale.Dérivée entre les Consignes et les mesures du Gyro pour chaque axe, et ont multiplie chaque erreurs par un coefficient puis on fait la sommme des trois erreurs qui sera notre commande a envoyer au moteur, chaque erreur na pas les mémes effets sur notre systéme.
+ 
+ -L'erreur Proportionnelle correspond a l'écart entre la valeur mesurée et notre Consigne, cette ecart est multiplié par un coefficient plus il est grand plus votre systéme atteindra sont objectif rapidement mais un coeff trop grand crée des oscillations qui destabilise votre systéme, un coeff trop petit ne nous permettra pas d'atteindre l'objectif il faut alors trouver un bon compromis entre la vitesse pour atteindre l'objectif et de trop grand dépassement. Si nous utilisons seulement l'erreur proportionnelle le systéme oscilleré et n'arriverais pas a se stabiliser dans le temps sur l'objectif(Erreur statique).
+ 
+ -L'erreur intégrale fait la somme des erreurs Prop au fil du temps cette erreur est complementaire a l'erreur Prop elle permet de reduire l'erreur statique dans le systéme si le coeff de l'erreur intégrale est trop élever cela crée  des oscillation est des grands dépassement de la consigne si il est trop faible votre systeme derivera est ne maintiendra pas l'objectif.
+ 
+ -L'erreur dérivé, soustrai l'erreur Prop précédente a l'erreur Prop actuelle elle permet a notre systéme d'anticiper les déplacements donc dévité les dépassements de consigne si votre coeff dérivé est trop élevé vous verrez votre systéme oscillé a haute fréquence si il est trop bas il y aura des dépassements de consigne important.
+ 
+ Si vous voulez voir les differents effet de l'erreur "Prop,Int,Dev" regardez cette video :https://www.youtube.com/watch?v=uXnDwojRb1g.
+ 
+ Sur votre banc de test faite varier les coefficient en fonction de vos préférence.
+     
+     
+     float KYP = 6; // Coefficient Erreur Prop "YAW"
+     float KYI = 0.22; // Coefficient Erreur intégrale "YAW"
+     float KYD = 0; // Coefficient Erreur dérivé "YAW"
 
+     float KRP = 1.3; // Coefficient Erreur Prop "ROLL"
+      float KRI = 0.04; // Coefficient Erreur integrale "ROLL"
+      float KRD = 18; // Coefficient Erreur dérivé "ROLL"
+
+     float KPP = 1.3; // Coefficient Erreur Prop "PITCH" 
+      float KPI =0.04; // Coefficient Erreur intégrale "PITCH"   
+     float KPD = 18; // Coefficient Erreur derivé "PITCH"
+ 
+     void PID(){
+
+     
+      
+      EpropP = ASP - ConsP; //erreur proportionnelle "PITCH"
+      EpropR = ASR - ConsR; //erreur proportionnelle "ROLL"
+      EpropY = ASY - ConsY; //erreur proportionnelle "YAW"
+ 
+ 
+      
+      
+      EintP +=  EpropP; //erreur intégrale "PITCH"
+      EintR +=  EpropR; //erreur intégrale "ROLL" 
+      EintY +=  EpropY; //erreur intégrale "YAW"
+ 
+     if ( EintP > 400 ) EintP = 400; // on limite les valeurs de l'intégrale pour éviter d'avoir des valeurs disproportionner                                                              
+     if ( EintP < -400 )EintP = -400;   qui engendrerées des dépassement effet "WindUp"
+     if ( EintR > 400 ) EintR = 400;
+     if ( EintR < -400 )EintR = -400;
+     if ( EintY > 400 ) EintY = 400;
+     if ( EintY < -400 )EintY = -400;
+ 
+      
+     EdevP =  EpropP-lastEP;  //erreur derivée "PITCH"
+     EdevR =  EpropR-lastER; //erreur derivée "ROLL"
+     EdevY =  EpropY-lastEY; //erreur derivée "YAW"
+ 
+   
+     lastEP =  EpropP; // On stoke l'erreur précédente du "PITCH"
+     lastER =  EpropR; // On stoke l'erreur précédente du "ROLL"
+     lastEY =  EpropY; // On stoke l'erreur précédente du "YAW"
+
+ 
+   
+     
+    EPIDR = KRP * EpropR + KRI * EintR + KRD * EdevR; // Somme des erreurs pour l'axe du "ROLL"
+    EPIDP = KPP * EpropP + KPI * EintP + KPD * EdevP; // Somme des erreurs pour l'axe du "PITCH"
+    EPIDY = KYP * EpropY + KYI * EintY + KYD * EdevY; // Somme des erreurs pour l'axe du "YAW"
+
+  
+     if ( EPIDP > 400 ) EPIDP = 400; // on limite les valeurs de sortie pour quel reste coherente avec les valeurs que l'on 
+     if ( EPIDP < -400 )EPIDP = -400;   enverra au moteur
+     if (EPIDR > 400 ) EPIDR = 400;
+     if (EPIDR < -400 )EPIDR = -400;
+     if ( EPIDY > 400 ) EPIDY = 400;
+     if ( EPIDY < -400 )EPIDY = -400;
+ 
+}
+
+
+Maintenant on va voir la partie du code qui va nous permettre de distribuer la puissance a chaque moteur
+
+     mot1 = ConsG-EPIDR-EPIDP-EPIDY;
+     mot2 = ConsG+EPIDR-EPIDP+EPIDY;
+     mot3 = ConsG-EPIDR+EPIDP+EPIDY;
+     mot4 = ConsG+EPIDR+EPIDP-EPIDY;
+     
+     
+ On rajoute les GAZ a tous les moteur et nous soustrayons ou additionnons les sorties du controleur PID en fonction du signe de ses sorties, pour comprendre le mieux est de voir des exemples.
+ 
+ Imagines votre drone qui se deplace autour de l'axe du "PITCH" vers l'avant a une vitesse de -10°/S est que votre Consigne est   égale a 0 donc votre programme doit monter la puissance des deux moteur a l'avant "mot1, mot2" et baisser la puisssance des moteurs arriéres "mot3, mot4". Le regulateur PID fait ce calcul "EpropP =-10-0" la valeur de sortie et négative -10 alors il faut que l'orsque j'ajoute -10 au "mot1, mot2" la valeur doit étre positive + 10 et restez négative pour "mot3, mot4", pour que sa soit positif il suffit de mettre - car "0--10" = +10 est mettez + pour que la valeur se soustrai "0+-10 = -10".
+ 
+ Si a l'inverse le drone se deplace autour de l'axe du "PITCH" vers l'arriére  a une vitesse de 10°/S est que votre Consigne est   égale a 0, il faut alors baissé la puissance de "mot1, mot2" est augmentez la puissance de "mot3, mot4". "EpropP =-10-0" la valeur de sortie est positive +10 pour le "mot1, mot2" sa fait "0-+10 = -10" et pour "mot3, mot4" sa fait "0++10= +10.
  
  
  
