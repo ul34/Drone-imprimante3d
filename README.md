@@ -451,7 +451,7 @@ Maintenant que nous avons déclarée nos interruptions au pins 8,9,10,11 nous po
  
  -L'erreur dérivé, soustrai l'erreur Prop précédente a l'erreur Prop actuelle elle permet a notre systéme d'anticiper les déplacements donc dévité les dépassements de consigne si votre coeff dérivé est trop élevé vous verrez votre systéme oscillé a haute fréquence si il est trop bas il y aura des dépassements de consigne important.
  
- Si vous voulez voir les differents effet de l'erreur "Prop,Int,Dev" regardez cette video :https://www.youtube.com/watch?v=uXnDwojRb1g.
+ Si vous voulez voir les differents effets des coefficiens des erreurs "Prop,Int,Dev" regardez cette video :https://www.youtube.com/watch?v=uXnDwojRb1g.
  
  Sur votre banc de test faite varier les coefficient en fonction de vos préférence.
      
@@ -518,7 +518,7 @@ Maintenant que nous avons déclarée nos interruptions au pins 8,9,10,11 nous po
 }
 
 
-Maintenant on va voir la partie du code qui va nous permettre de distribuer la puissance a chaque moteur
+Maintenant on va voir la partie du code qui va nous permettre de distribuer la puissance a chaque moteur.
 
      mot1 = ConsG-EPIDR-EPIDP-EPIDY;
      mot2 = ConsG+EPIDR-EPIDP+EPIDY;
@@ -526,11 +526,156 @@ Maintenant on va voir la partie du code qui va nous permettre de distribuer la p
      mot4 = ConsG+EPIDR+EPIDP-EPIDY;
      
      
- On rajoute les GAZ a tous les moteur et nous soustrayons ou additionnons les sorties du controleur PID en fonction du signe de ses sorties, pour comprendre le mieux est de voir des exemples.
+ On rajoute la consigne GAZ a tous les moteur et nous soustrayons ou additionnons les sorties du controleur PID en fonction du signe de ses sorties, pour comprendre le mieux est de voir des exemples.
  
  Imagines votre drone qui se deplace autour de l'axe du "PITCH" vers l'avant a une vitesse de -10°/S est que votre Consigne est   égale a 0 donc votre programme doit monter la puissance des deux moteur a l'avant "mot1, mot2" et baisser la puisssance des moteurs arriéres "mot3, mot4". Le regulateur PID fait ce calcul "EpropP =-10-0" la valeur de sortie et négative -10 alors il faut que l'orsque j'ajoute -10 au "mot1, mot2" la valeur doit étre positive + 10 et restez négative pour "mot3, mot4", pour que sa soit positif il suffit de mettre - car "0--10" = +10 est mettez + pour que la valeur se soustrai "0+-10 = -10".
  
- Si a l'inverse le drone se deplace autour de l'axe du "PITCH" vers l'arriére  a une vitesse de 10°/S est que votre Consigne est   égale a 0, il faut alors baissé la puissance de "mot1, mot2" est augmentez la puissance de "mot3, mot4". "EpropP =-10-0" la valeur de sortie est positive +10 pour le "mot1, mot2" sa fait "0-+10 = -10" et pour "mot3, mot4" sa fait "0++10= +10.
+ Exemple Détaillé.
+ 
+ KPP = 1;
+ KPI = 1;
+ KPD = 1
+ 
+  anglemaxP = 16 * angleP; // -32 = 16*-2;
+  ConsP -= anglemaxP ; // 32 = 0--32;
+  EpropP = ASP - ConsP; // -42 = -10-32;
+  EintP +=  EpropP; // -42 = 0 + -42;
+  EdevP =  EpropP-lastEP;  -42 - 0;
+  EPIDP = KPP * EpropP + KPI * EintP + KPD * EdevP; // -126 = 1 * -42 + 1 * -42 + 1 * -42;
+  
+   mot1 = ConsG-EPIDR-EPIDP-EPIDY; //1326 = 1200 - 0 --126 - 0;
+   mot2 = ConsG+EPIDR-EPIDP+EPIDY; // 1326 = 1200 + 0 --126 + 0; 
+   mot3 = ConsG-EPIDR+EPIDP+EPIDY; // 1074 = 1200 - 0 +-126 + 0;
+   mot4 = ConsG+EPIDR+EPIDP-EPIDY; // 1074 = 1200 + 0 +-126 - 0;
+  
+      
+  
+  
+   
+  
+ 
+ 
+ 
+ Si a l'inverse le drone se deplace autour de l'axe du "PITCH" vers l'arriére  a une vitesse de 10°/S est que votre Consigne est   égale a 0, il faut alors baissé la puissance de "mot1, mot2" est augmentez la puissance de "mot3, mot4". "EpropP =10-0" la valeur de sortie est positive +10 pour le "mot1, mot2" sa fait "0-+10 = -10" et pour "mot3, mot4" sa fait "0++10= +10.
+ 
+ 
+ 
+  Exemple Détaillé.
+ 
+ KPP = 1;
+ KPI = 1;
+ KPD = 1
+ 
+  anglemaxP = 16 * angleP; // 32 = 16*2;
+  ConsP -= anglemaxP ; // -32 = 0-32;
+  EpropP = ASP - ConsP; // 42 = 10--32;
+  EintP +=  EpropP; // 42 = 0 + 42;
+  EdevP =  EpropP-lastEP;  42 - 0;
+  EPIDP = KPP * EpropP + KPI * EintP + KPD * EdevP; // 126 = 1 * 42 + 1 * 42 + 1 * 42;
+  
+   mot1 = ConsG-EPIDR-EPIDP-EPIDY; //1074 = 1200 - 0 -126 - 0;
+   mot2 = ConsG+EPIDR-EPIDP+EPIDY; // 1074 = 1200 + 0 -126 + 0; 
+   mot3 = ConsG-EPIDR+EPIDP+EPIDY; // 1326 = 1200 - 0 +126 + 0;
+   mot4 = ConsG+EPIDR+EPIDP-EPIDY; // 1326 = 1200 + 0 +126 - 0;
+   
+   
+   
+   
+   
+   Nous allons voir le code qui permet de configurer le deux gyroscope et accélérométre. Récupéré les données brute et les transformés en angle° et en angle°/S.
+   
+   
+        #include <Wire.h>
+   
+      void communication(){
+  
+     Wire.beginTransmission(MPU_ADDRESS); //  on envoie l'adresse 0x68 au MPU-1 (Slave) pour lancer la transmission
+     Wire.write(0x6B);// on ecrit un octet qu'on place en attente pour communiquer avec le registre PWR_MGMT_1
+     Wire.write(0x00);// on ecrit un octet qu'on place en attente pour configurer la clock 8Mhz et l'alimentation
+     Wire.endTransmission(); // on evoie les octets mis en attente et on termine le transmission
+  
+     
+      Wire.beginTransmission(MPU_ADDRESS); // on envoie l'adresse 0x68 au MPU-1 (Slave) pour lancer la transmission 
+      Wire.write(0x1B);// ..................... pour communiquer avec le registre GYRO_CONFIG  
+      Wire.write(0x08);//........... on configure le plage de mesure du gyroscope 0°/S a ±500°/s
+      Wire.endTransmission(); // on evoie les octets mis en attente et on termine le transmission 
+  
+      
+     Wire.beginTransmission(MPU_ADDRESS); // on envoie l'adresse 0x68 au MPU-1 (Slave) pour lancer la transmission  
+     Wire.write(0x1C); // ..................... pour communiquer avec le registre ACCEL_CONFIG  
+     Wire.write(0x10); //...........    on configure le plage de mesure de l'accélérométre j'usqua  ±8g
+     Wire.endTransmission(); //on evoie les octets mis en attente et on termine le transmission   
+  
+     Wire.beginTransmission(MPU_ADDRESS); //  on envoie l'adresse 0x68 au MPU-1 (Slave) pour lancer la transmission
+     Wire.write(0x1A); // ..................... pour communiquer avec le registre CONFIG  
+     Wire.write(0x03); //  ................pour activer un filtre passe bas ~43Hz
+     Wire.endTransmission(); //on evoie les octets mis en attente et on termine le transmission 
+      }
+     
+     
+     
+ On suit la meme procedure pour MPU-2. Si vous voulez changer les plage de mesure des Gyros vous avez le choix "250°/S, 500°/S, 1000°/S, 2000°/S et pour l'accélérométre "+2g, +4g, +8g, +16g".
+ 
+     Pour configurer le Gyro.
+ 
+       0x00 = 250°/S      SSF_GYRO    131
+       0x08 = 500°/S      SSF_GYRO    65.5
+       0x10 = 1000°/S     SSF_GYRO    32.8
+       0x18 = 2000°/S     SSF_GYRO    16.4
+       
+     Pour configure l'Accel.
+       
+        0x00 = +2g
+        0x08 = +4g
+        0x10 = +8g
+        0x18 = +16g
+        
+        
+        
+   La prochaine partie de code nous permet de récupéré les données des trois axes du gyroscope  de l'accélérométre et la température.
+        
+        
+        
+    Wire.beginTransmission(MPU_ADDRESS); // on envoie l'adresse 0x68 au MPU-1 (Slave) pour lancer la transmission  
+    Wire.write(0x3B); // on ecrit un octet qu'on place en attente pour communiquer avec le registre ACCEL_XOUT_H
+    Wire.endTransmission(); // on envoie l'octet mis en attente et on termine le transmission  
+    Wire.requestFrom(MPU_ADDRESS, 14); // On demande les 14 octets  en partan de ACCEL_XOUT_H    
+
+     
+    while (Wire.available() < 14); // tan que les 14 octets ne sont pas recu on attend.
+
+    Rollacc  = Wire.read() << 8 | Wire.read(); // on stoke la valeur d'acceleration du "ROLL" dans la variable "Rollacc"
+    Pitchacc  = Wire.read() << 8 | Wire.read(); // on stoke la valeur d'acceleration du "PITCH" dans la variable  "Pitchacc"  
+    Yawacc  = Wire.read() << 8 | Wire.read(); //on stoke la valeur d'acceleration du "YAW" dans la variable "Yawacc"
+    temperature = Wire.read() << 8 | Wire.read(); // on stoke la temperature dans la variable "temperature"  
+    Rollgyro = Wire.read() << 8 | Wire.read(); // on stoke la valeur brute du "ROLL" dans la variable " Rollgyro"  
+    Pitchgyro = Wire.read() << 8 | Wire.read(); // on stoke la valeur brute du "PITCH" dans la variable " Pitchgyro" 
+    Yawgyro = Wire.read() << 8 | Wire.read(); //  on stoke la valeur brute du "YAW" dans la variable " Yawgyro" 
+    
+    
+  La partie du code qui a du surement vous interpeller ses "Wire.read() << 8 | Wire.read()".Que fait cette ligne de code ?
+  Elle appelle un octet le decale de 8 bits sur la gauche puis appelle un nouvell octet quel va comparer au premier avec le comparateur binaire "ou". La valeur finale et écrite sur deux octets, je vais vous montrer un exemple ci-dessous.
+  
+  
+      ACCEL_XOUT_H = 11000000  // premier octet appellé
+      ACCEL_XOUT_L = 00010000  // Deuxiéme octet appellé
+         
+                 N° 7  6  5  4  3  2  1  0
+                    1  1  0  0  0  0  0  0
+                    
+                           <<8
+                   
+                N° 15  14 13 12 11 10 9  8  
+                    1  1  0  0  0  0  0  0  
+                             
+                        | Wire.read();        = 1101000000010000
+                   
+                N° 7  6  5  4  3  2  1  0
+                   0  0  0  1  0  0  0  0
+       
+      
+       
+
  
  
  
