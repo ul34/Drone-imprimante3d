@@ -560,23 +560,23 @@ Maintenant on va voir la partie du code qui va nous permettre de distribuer la p
  
  
  
-  Exemple Détaillé.
+    Exemple Détaillé.
  
- KPP = 1;
- KPI = 1;
- KPD = 1
+    KPP = 1;
+    KPI = 1;
+    KPD = 1
  
-  anglemaxP = 16 * angleP; // 32 = 16*2;
-  ConsP -= anglemaxP ; // -32 = 0-32;
-  EpropP = ASP - ConsP; // 42 = 10--32;
-  EintP +=  EpropP; // 42 = 0 + 42;
-  EdevP =  EpropP-lastEP;  42 - 0;
-  EPIDP = KPP * EpropP + KPI * EintP + KPD * EdevP; // 126 = 1 * 42 + 1 * 42 + 1 * 42;
+     anglemaxP = 16 * angleP; // 32 = 16*2;
+    ConsP -= anglemaxP ; // -32 = 0-32;
+    EpropP = ASP - ConsP; // 42 = 10--32;
+    EintP +=  EpropP; // 42 = 0 + 42;
+    EdevP =  EpropP-lastEP;  42 - 0;
+    EPIDP = KPP * EpropP + KPI * EintP + KPD * EdevP; // 126 = 1 * 42 + 1 * 42 + 1 * 42;
   
-   mot1 = ConsG-EPIDR-EPIDP-EPIDY; //1074 = 1200 - 0 -126 - 0;
-   mot2 = ConsG+EPIDR-EPIDP+EPIDY; // 1074 = 1200 + 0 -126 + 0; 
-   mot3 = ConsG-EPIDR+EPIDP+EPIDY; // 1326 = 1200 - 0 +126 + 0;
-   mot4 = ConsG+EPIDR+EPIDP-EPIDY; // 1326 = 1200 + 0 +126 - 0;
+     mot1 = ConsG-EPIDR-EPIDP-EPIDY; //1074 = 1200 - 0 -126 - 0;
+    mot2 = ConsG+EPIDR-EPIDP+EPIDY; // 1074 = 1200 + 0 -126 + 0; 
+    mot3 = ConsG-EPIDR+EPIDP+EPIDY; // 1326 = 1200 - 0 +126 + 0;
+    mot4 = ConsG+EPIDR+EPIDP-EPIDY; // 1326 = 1200 + 0 +126 - 0;
    
    
    
@@ -614,7 +614,7 @@ Maintenant on va voir la partie du code qui va nous permettre de distribuer la p
      
      
      
- On suit la meme procedure pour MPU-2. Si vous voulez changer les plage de mesure des Gyros vous avez le choix "250°/S, 500°/S, 1000°/S, 2000°/S et pour l'accélérométre "+2g, +4g, +8g, +16g".
+ On suit la meme procedure pour MPU-2. Si vous voulez changer les plage de mesure des Gyros vous avez le choix "250°/S, 500°/S, 1000°/S, 2000°/S" et pour l'accélérométre "+2g, +4g, +8g, +16g".
  
      Pour configurer le Gyro.
  
