@@ -632,7 +632,7 @@ Maintenant on va voir la partie du code qui va nous permettre de distribuer la p
         
         
         
-   La prochaine partie de code nous permet de récupéré les données des trois axes du gyroscope  de l'accélérométre et la température.
+   La prochaine partie de code nous permet de récupéré les données brutes des trois axes du gyroscope  de l'accélérométre et la température.
         
         
         
@@ -672,7 +672,97 @@ Maintenant on va voir la partie du code qui va nous permettre de distribuer la p
                    
                 N° 7  6  5  4  3  2  1  0
                    0  0  0  1  0  0  0  0
-       
+                   
+                   
+Le Gyro meme au repos est trés sensible au vibration "bruit" ce qui a pour effet de faire dérivée notre mesure pour éviter cela  a chaque fois que vous allumerez votre drone on va faire une moyenne du bruit pour chaque axe puis on le soustraira a la valeur brute.
+
+
+
+      void Emoyen(){
+    int max_samples = 2000;
+    for (int i = 0; i < max_samples; i++) { // moyenne n = 2000 on boucle 2000 fois
+    lectureMPU(); // on appelle les valeurs brutes 
+     
+    // on incrémentes les valeurs brutes pour chaque axe 2000 fois
+    Eroll += Rollgyro; 
+    Epitch += Pitchgyro;
+    Eyaw += Yawgyro;
+    PORTD |= B11110000; // on mes nos moteur a 0
+    delayMicroseconds(1000);
+    PORTD &= B00001111;
+    
+    delay(3);
+    } // 0n divise par l'effectif 2000 pour avoir la moyenne des variations au repos
+      Eroll /= max_samples; 
+    Epitch /= max_samples;
+    Eyaw /= max_samples;
+
+    }
+    
+    
+ Aprés avoir fait la moyenne des variations. On va voir la partie qui va nous permettre de transformer les valeurs brutes du gyroscope en angle.
+ 
+ 
+      void ANgyro() {
+     // on soustrai a chaque boucle la moyenne des variations au valeurs brutes
+     Rollgyro -= Eroll;
+     Pitchgyro -= Epitch;
+     Yawgyro -= Eyaw;
+ 
+     
+
+    // on calcul l'angle par integration
+    angleRO += (Rollgyro / (FREQ * SSF_GYRO));
+    anglePO += (-Pitchgyro / (FREQ * SSF_GYRO)); 
+     }
+     
+     
+  Pour calculer l'angle on intégre la rotation angulaire toute les 4ms vu que notre programme fonctionnent a 250 Hz. Notre valeur brute divisée par la valeur inscrite sur la datasheet en fonction de la plage de mesure que l'on a configurée nous donne la vitesse de déplacement °/S. Je vais vous donner des exemples si votre plage de mesure est de 500 °/S la valeur donner par la datashett ces 65.5 si l'on fait "500 * 65.5 = 32750" ce qui veut dire que la valeur brute maximale qu'on recevra sera 32750 quand le drone se déplace a 500°/S "32750 /65.5 = 500 °/S" nous savon que notre programme boucle toute les 4 ms si nous recevont 32750 ca veut dire que notre drone se deplace de 500 degrés en une seconde mes vue que nous savons qu'il c'est écoulé 4ms qui représente 1/250 de seconde on fait "500/250 = 2" se qui nous donne de combien de degrés ses déplacer le drone "2°" et a chaque boucle on incrémente l'angle parcourue pour avoir notre positio en degrés.
+  
+  Si vous avez choisi une autre plage de mesure changer la valeur de la variable "SSF_GYRO" plus votre plage de mesure est grande moins le Gyro est précis.
+  
+    250 °/S   Precision: 1/131 = 0.007°/S
+    500 °/S   Precision: 1/65.5 = 0.015°/S
+    1000 °/S   Precision: 1/32.8 = 0.03°/S
+    2000 °/S   Precision: 1/16.4 = 0.06°/S
+    
+    
+    
+    
+La suite du code dans la fonction ANgyro() va nous permettre de transferer l'angle du pitch vers le roll et vis versa en fonction du yaw. Imaginez votre drone penchez vers l'arriére si vous faites tournez le drone autour de l'axe du "YAW" les valeurs de l'axe du Roll et du PITCH ne changerez pas car elle ne suibissent pas d'acceleration.
+         
+    void ANgyro() {
+    anglePO += angleRO * sin(Yawgyro * (PI / (FREQ * SSF_GYRO * 180))); // transfer du Roll sur le PITCH sinus(radians)
+  
+    angleRO -= anglePO * sin(Yawgyro * (PI / (FREQ * SSF_GYRO * 180))); // // transfer du PITCH sur le ROLL sinus(radians)
+    }
+    
+    
+Aprés avoir calculer les angles d'inclinaison avec le gyroscope nous allons calculer les angles avec l'accélérométre.
+
+
+      void ANacc(){
+                                                 
+      //  Norme du vecteur acceleration ||X,Y,Z|| = √(X² + Y² + Z²): https://www.youtube.com/watch?v=tTaP48b4_5w
+      acc_total_vector = sqrt(pow(Rollacc, 2) + pow(Pitchacc, 2) + pow(Yawacc, 2));
+      
+      if (abs(Rollacc) < acc_total_vector) {// on s'assure que la valeur reste entre -1 et 1 pour la fonction asin
+      RollaccA = asin((float) Pitchacc/ acc_total_vector) * (180 / PI);// on calcule l'angle en radians grace a la fonction asin                 
+    }                                                                   puis on la covertie en degrés "180/3.14 = 1rad/57.32°
+
+    if (abs(Pitchacc) < acc_total_vector) { // on s'assure que la valeur reste entre -1 et 1 pour la fonction asin
+    PitchaccA = asin((float)Rollacc/ acc_total_vector) * (180 / PI);// on calcule l'angle en radians grace a la fonction asin                 
+    }                                                                 puis on la covertie en degrés "180/3.14 = 1rad/57.32°
+    
+    }
+    
+    
+    
+    
+    Maintenant que nous avons les angles du Gyro et de l'accélérométre nous allons fusionner les deux mesures. Le Gyro a pour avantage de ne pas étre sensible au vibration mes la mesure dérive au contraire l'accélérométre ne dérive pas mes est trés sensible au vibration donc les deux mesures se compense et en les fusionnant on aura de meilleur résultat l'angle ne dérivera pas dans le temps.
+
+  
+  
       
        
 
