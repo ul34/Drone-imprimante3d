@@ -136,6 +136,22 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  Pour augmenter la poussée vous pouvez augmentez la taille des hélices mais cela a ses limites vous risquez d'arracher le rotor de votre moteur ou  de crée une usure prématuré des roulements, pour notre drone prenez des hélices de "12" pouces maximum, personnellemnt j'utilise des hélices 1045 soit "10" pouces 25cm avec un pas de 4.5.
  
  
+ - Batterie & Chargeur
+ 
+ Pour les drones on utilise des batterie lithion-ion-polymére qui on pour avantage de disposer d'une bonne densité énetgétique (Volume par unité d'energie) et la batterie est légére car elle na pas d'envellope de métal . L'orsque vous acheterez une batterie il ya plusieurs informations a prendre en compte la tension "Voltage" la capacité "mah" et le taux de décharge.
+ 
+ -Une cellules de batterie Lipo a une tension nominale de 3.7v est maximale de 4.2v Vous verrez sur les batteries "2S,3S,4S,6S"
+ notre batterie est une 3S ce qui veut dire que nous avons acheté une batterie avec 3 cellules en serie ce qui nous donnent une tension totale "11.1 = 3*3.7" et 12.6v Max. Une cellule Lipo ne doit pas decendre en dessous de 3V laisser une marge de sécurité posser votre drone a 3.5v par cellules.
+ 
+ -La capacité de la batterie s'exprime  en ampéres/H ou plus souvent en milliampére/h sur les batteries. Si vous avez une batterie de 6000mah sa veut dire que si votre systéme consomme 6 ampéres vous aurez une autonomie d'une heure.
+ 
+- Le capacité de decharge correspond au nombre d'ampéres maximum que l'on peut demander a notre batterie, exemple si vous avez une batterie 30C de 3000 mah vous pourrez demander a la batterie "90 = 30 *3" 90 ampéres. Un moteur consomme maximum 15AH ce qui fait "4*15 = 60" 60AH alors il faut prendre une batterie qui peut nous donner environ deux fois le courant demander soit 120AH.
+
+-Pour charger des batterie Lipo il faut un chargeur spécial qui va equilibré les cellules entre elle et elle ne supporte pas les surcharges et le chargeur suit une procédure bien définit en debut de charge le voltage monte progressivement j'usqua atteindre 4.2v a partir de ce moment plus l'accumulateur sera remplie plus l'amperage demandé par la Batt diminue quand l'ampérage demandé descend en dessous de 3% de la capacité de votre Batt la Batt est complétement remplie. Il faut aussi dire a notre chargeur combien d'ampéres il va délivré, les batteries Lipo accepte maximum un ampérage equivalent a deux fois sa capacité "2C" cela veut dire que votre batterie sera rechargé en 30 minutes plutot rapide mais a un désavantage vous diminuer la durée de vie de votre Batt je vous conseille de recharger en "1C" soit une fois la capacité de la Batt.
+
+
+ 
+ 
  - Montage composant & soudure
  
  
@@ -180,8 +196,7 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
     CH4"ROLL"  a la pin digital 10.
  
 
--Maintenant nous passons au montage des deux gyroscopes tous d'abord imprimer les deux petits support qui se trouve dans le fichier "...." visé dessus les gyroscopes puis collé les deux support sur la plaque que vous avez imprimé avec le fichier "N.basdrone.stl". la position des GyRo sur la plaque n'est pas important mais le sens des gyroscopes doit étre respecté comme vous pouvais le voir sur l'image ci-dessous aidé vous en utilisant les petites fléches inscrites sur les GyRo.
-  
+ 
   <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/DR.png" width="200" height="125">
  
   passons au soudure tous dabord il faut souder un fil entre le "VCC" du MPU-2 et sa broche "ADO" puis relier le "VCC"
@@ -214,12 +229,16 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
   
 Pour alimenter les quatre ESC il faut fabriquer une "Power distribution board" on va faire un circuit imprimée comme sur l'image ci-dessous, prenez votre plaque de cuivre est un marqueur indélébile est redessiner les partie en rouge puis tremper la plaque de cuivre dans une solution de perchlorure de fer est agiter doucement il devrait rester que les parties colorier, les deux rectangle et le diviseurs de tension , mes a quoi le diviseur de tension peut il  servir ? l'arduino ne peut mesurer que des tensions inferieur ou égale a 5v notre batterie fait 12.6v pour pouvoir mesurer le niveau de charge de notre batterie et compenser la puissance des moteurs quand le voltage diminue, pour éviter d'avoir des commandes de moins en moin réactive au fils du vol il faut que l'arduino puisse mesurer le voltage alors nous méttons une diode avec deux resistances en serie est nous soudons un fil entre les deux resistances que nous relions a la pin analogique 0 . 
 
-Et voici le calcul qui nous permet de connaitre la valeur de "R1 = (U/U2)*R2-R2"  je choisi une valeur de resistance arbitraire pour R2 elle doit tous de méme étre assez élever pour que notre circuit ne consomme pas trop de courant (I = U/R) on va prendre une valeur de 1000 Ohm, U represente la valeur de notre alimentation "12.6v", U2 la tension que l'on veut entre R1 et R2 donc 5v "R1=1520 =(12.6/5)*1000-1000" donc pour que U2 ou la broche Analogique 0 soit a 5v quand la batterie est a sa tention maximale il faut que R1 soit égale a 1520 Ohm, nous mettons une Resistance de 1.5k les 20 Ohm supplementaire n'ont pas un effet significatif et R2 1000 Ohm.
+Et voici le calcul qui nous permet de connaitre la valeur de "R1 = (U/U2)*R2-R2"  je choisi une valeur de resistance arbitraire pour R2 elle doit tous de méme étre assez élever pour que notre circuit ne consomme pas trop de courant (I = U/R) on va prendre une valeur de 1000 Ohm, U represente la valeur de notre alimentation "12.6v", U2 la tension que l'on veut entre R1 et R2 donc 5v "R1=1520 =(12.6/5)*1000-1000" donc pour que U2 ou la broche Analogique 0 soit a 5v quand la batterie est a sa tention maximale il faut que R1 soit égale a 1520 Ohm, nous mettons une Resistance de 1.5k les 20 Ohm supplementaire n'ont pas un effet significatif et R2 1000 Ohm. Pour que votre dronne vous previennent l'orsque votre batterie est décharger branchez un "Buzzer" sur la pin digitale 13.
 
 Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre une couche d'etein sur les pistes avec les huit trous pour alimenter vos ESC il peut passer dans ces pistes un courant de 60 amperes et risque de crée une surchauffe.
 
 
  <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/PBD.png" width="200" height="125">
+ 
+ 
+   L'orsque vous monté votre Drone découpé des piéces  en chambre a air ou des pads en silicone pour les mettres entre les moteurs et les bras ne séré pas trop votre moteur car sinon le pouvoir enti vibrant sera limité, rajouté des piéces en chambre a air entre les bras des moteurs est les deux plaques qui les jointes sa permettra de limiter les vibrations et d'éviter au bras de bouger. Si vous placer votre arduino ou le Circuit imprimé entre les deux plaques placer le port USB de l'arduino prés des bords pour pouvoir téleverser les programmes. Mettez aussi du frein a filer sur les vis du moteurs.
+ 
  
  - Programme
  
@@ -270,7 +289,11 @@ Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre un
     mpu1.setZGyroOffset(-8);
   
   
-  Normalement apres avoir televerser le programme "....." votre dronne est prét a voler.
+  Normalement apres avoir televerser le programme "FCuno.ino" votre dronne est prét a voler.
+  
+ 
+  
+  
   
   
   
@@ -736,7 +759,7 @@ La suite du code dans la fonction ANgyro() va nous permettre de transferer l'ang
   
     angleRO -= anglePO * sin(Yawgyro * (PI / (FREQ * SSF_GYRO * 180))); // // transfer du PITCH sur le ROLL sinus(radians)
     }
-    // sin(-90) = -1 , sin(90)
+    // sin(-90) = -1 , sin(90) = 1,    (  -30°= 30° * sin (90°)
     
     
 Aprés avoir calculer les angles d'inclinaison avec le gyroscope nous allons calculer les angles avec l'accélérométre.
@@ -765,7 +788,22 @@ Aprés avoir calculer les angles d'inclinaison avec le gyroscope nous allons cal
    
    Maintenant que nous avons les angles du Gyro et de l'accélérométre nous allons fusionner les deux mesures. Le Gyro a pour avantage de ne pas étre sensible au vibration mes la mesure dérive au contraire l'accélérométre ne dérive pas mes est trés sensible au vibration donc les deux mesures se compense et en les fusionnant on aura de meilleur résultat l'angle ne dérivera pas dans le temps.
    
-   Le Gyro dérive car nous prenons une valeur toute les ~4ms et nous considérons que la vitesse angulaire est la méme pendant les 4ms alors quand réalité ses faut. L'accélérométre ne dérive pas car il mesure l'angle en utilisant l'apesanteur terrestre 9.81 m-s. D'ailleurs nous verrons juste aprés dans la partie ou l'on fusionne les deux mesures que plus votre programme a une frequence élevé moins nous utilisons la mesure de l'accelérométre
+   Le Gyro dérive car nous prenons une valeur toute les ~4ms et nous considérons que la vitesse angulaire est la méme pendant les 4ms alors quand réalité ses faut. L'accélérométre ne dérive pas car il mesure l'angle en utilisant l'apesanteur terrestre 9.81 m-s. D'ailleurs nous verrons juste aprés dans la partie ou l'on fusionne les deux mesures que plus votre programme a une frequence élevé moins nous utilisons la mesure de l'accelérométre.
+   
+   
+    void calculangle () {
+    
+    if (initialized) {
+    // (gyro * (1-temps parcouru pour une boucle) + Accel * (temps parcourue pour une boucle)
+    angleRO = angleRO * 0.98 + RollaccA * 0.02; 
+    anglePO = anglePO * 0.98 +  PitchaccA* 0.02;
+    } else {
+    //La premiere mesure est faite seulement par l'accelerometrre 
+    angleRO = RollaccA;
+     anglePO= PitchaccA;
+    initialized = true;
+    }
+    }
 
   
   
