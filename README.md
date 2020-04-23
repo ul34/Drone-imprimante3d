@@ -736,6 +736,7 @@ La suite du code dans la fonction ANgyro() va nous permettre de transferer l'ang
   
     angleRO -= anglePO * sin(Yawgyro * (PI / (FREQ * SSF_GYRO * 180))); // // transfer du PITCH sur le ROLL sinus(radians)
     }
+    // sin(-90) = -1 , sin(90)
     
     
 Aprés avoir calculer les angles d'inclinaison avec le gyroscope nous allons calculer les angles avec l'accélérométre.
@@ -763,6 +764,8 @@ Aprés avoir calculer les angles d'inclinaison avec le gyroscope nous allons cal
     
    
    Maintenant que nous avons les angles du Gyro et de l'accélérométre nous allons fusionner les deux mesures. Le Gyro a pour avantage de ne pas étre sensible au vibration mes la mesure dérive au contraire l'accélérométre ne dérive pas mes est trés sensible au vibration donc les deux mesures se compense et en les fusionnant on aura de meilleur résultat l'angle ne dérivera pas dans le temps.
+   
+   Le Gyro dérive car nous prenons une valeur toute les ~4ms et nous considérons que la vitesse angulaire est la méme pendant les 4ms alors quand réalité ses faut. L'accélérométre ne dérive pas car il mesure l'angle en utilisant l'apesanteur terrestre 9.81 m-s. D'ailleurs nous verrons juste aprés dans la partie ou l'on fusionne les deux mesures que plus votre programme a une frequence élevé moins nous utilisons la mesure de l'accelérométre
 
   
   
