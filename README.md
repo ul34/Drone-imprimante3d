@@ -383,7 +383,7 @@ Maintenant que nous avons déclarée nos interruptions au pins 8,9,10,11 nous po
             previous_state[0] = HIGH;  // previous_state[0] est égale a HIGH                      
             timer[0]          = current_time; // on stoke T0 dans  timer[0]              
         }
-    } else if(previous_state[0] == HIGH) { // SI pin 8 a l'etat haut est faut et que previous_state[0]==HIGH              
+    } else if(previous_state[0] == HIGH) { // SI pin 8 a l'etat bas et que previous_state[0]==HIGH              
         previous_state[0] = LOW;  // previous_state[0] est égale a LOW                              
         pulse_duration[0] = current_time - timer[0]; Durée a l'état haut T1-T0 
     }
@@ -553,23 +553,23 @@ Maintenant on va voir la partie du code qui va nous permettre de distribuer la p
  
  Imagines votre drone qui se deplace autour de l'axe du "PITCH" vers l'avant a une vitesse de -10°/S est que votre Consigne est   égale a 0 donc votre programme doit monter la puissance des deux moteur a l'avant "mot1, mot2" et baisser la puisssance des moteurs arriéres "mot3, mot4". Le regulateur PID fait ce calcul "EpropP =-10-0" la valeur de sortie et négative -10 alors il faut que l'orsque j'ajoute -10 au "mot1, mot2" la valeur doit étre positive + 10 et restez négative pour "mot3, mot4", pour que sa soit positif il suffit de mettre - car "0--10" = +10 est mettez + pour que la valeur se soustrai "0+-10 = -10".
  
- Exemple Détaillé.
+    Exemple Détaillé.
  
- KPP = 1;
- KPI = 1;
- KPD = 1
+      KPP = 1;
+      KPI = 1;
+      KPD = 1
  
-  anglemaxP = 16 * angleP; // -32 = 16*-2;
-  ConsP -= anglemaxP ; // 32 = 0--32;
-  EpropP = ASP - ConsP; // -42 = -10-32;
-  EintP +=  EpropP; // -42 = 0 + -42;
-  EdevP =  EpropP-lastEP;  -42 - 0;
-  EPIDP = KPP * EpropP + KPI * EintP + KPD * EdevP; // -126 = 1 * -42 + 1 * -42 + 1 * -42;
+    anglemaxP = 16 * angleP; // -32 = 16*-2;
+    ConsP -= anglemaxP ; // 32 = 0--32;
+    EpropP = ASP - ConsP; // -42 = -10-32;
+    EintP +=  EpropP; // -42 = 0 + -42;
+    EdevP =  EpropP-lastEP;  -42 - 0;
+    EPIDP = KPP * EpropP + KPI * EintP + KPD * EdevP; // -126 = 1 * -42 + 1 * -42 + 1 * -42;
   
-   mot1 = ConsG-EPIDR-EPIDP-EPIDY; //1326 = 1200 - 0 --126 - 0;
-   mot2 = ConsG+EPIDR-EPIDP+EPIDY; // 1326 = 1200 + 0 --126 + 0; 
-   mot3 = ConsG-EPIDR+EPIDP+EPIDY; // 1074 = 1200 - 0 +-126 + 0;
-   mot4 = ConsG+EPIDR+EPIDP-EPIDY; // 1074 = 1200 + 0 +-126 - 0;
+     mot1 = ConsG-EPIDR-EPIDP-EPIDY; //1326 = 1200 - 0 --126 - 0;
+     mot2 = ConsG+EPIDR-EPIDP+EPIDY; // 1326 = 1200 + 0 --126 + 0; 
+     mot3 = ConsG-EPIDR+EPIDP+EPIDY; // 1074 = 1200 - 0 +-126 + 0;
+     mot4 = ConsG+EPIDR+EPIDP-EPIDY; // 1074 = 1200 + 0 +-126 - 0;
   
       
   
