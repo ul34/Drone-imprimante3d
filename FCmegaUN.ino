@@ -180,7 +180,7 @@ lastEY =  EpropY;
 
  
    
-//EPIDP = KPP * EpropP + KPI * EintP + KPD * EdevP; // erreur pid sortie pour chaque axe
+ 
 EPIDR = KRP * EpropR + KRI * EintR + KRD * EdevR;
 EPIDP = KPP * EpropP + KPI * EintP + KPD * EdevP; 
 EPIDY = KYP * EpropY + KYI * EintY + KYD * EdevY;
