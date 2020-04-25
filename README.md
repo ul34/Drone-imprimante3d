@@ -41,7 +41,7 @@ Remarque: les températures d'impression varie en fonction de la marque de plast
 
 -N.bras.stl ce fichier permet d'imprimée les bras du drone duplique les au nombres de 4 dans votre slicer (Cura...).
 
--N.calibras.stl ce fichier permet d'imprimer des piéces aligne au millieux sur la longeur est la largeur.Elle permettra de glisser un rond de 6mm de diamétre pour pouvoir calibrer les coéfficients P.I.D des axes PITCH et ROLL.
+-N.calibras.stl ce fichier permet d'imprimer des piéces aligne au millieux sur la longeur est la largeur du drone.Elle permettra de glisser un rond de 6mm de diamétre pour pouvoir calibrer les coéfficients P.I.D des axes PITCH et ROLL.
 
 -N.supMPU6050.stl ce fichier contient l'impression du support gyroscope, imprimé deux support.
 
@@ -51,6 +51,7 @@ Remarque: les températures d'impression varie en fonction de la marque de plast
 -MPU6050 *2 ~5€
 
 -ESC 30A *4  ~20€
+
 -arduino Uno ou arduino Mega
 
 -Radiocommande Flysky fs-i6 avec récepteur  ~45€
@@ -155,7 +156,7 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
  - Montage composant & soudure
  
  
-  Si vous avez le matérielle nécessaire pour réaliser des circuit imprimée est vous voulez transferez le circuit sur la plaque en cuivre en utilisant de l'acetone et alcool ou en utilisant le transfert par chaleur avec un fer a repasse imprimée avec une imprimante laser les fichiers "PCB-FC.pdf" et "PCB-power distrib.pdf". Les deux autres fichier "PCB-FC-négatif.pdf" et "PCB-power distrib-négatif.pdf" sont utile si vous faites vos circuit imprimée avec une insoleuse. Si vous n'avez pas le materielle nécessaire suivez les instructions suivante.
+  Si vous avez le matérielle nécessaire pour réaliser des circuit imprimée est vous voulez transferez le circuit sur la plaque en cuivre en utilisant de l'acetone et alcool ou en utilisant le transfert par chaleur avec un fer a repasse, imprimée avec une imprimante laser les fichiers "PCB-FC.pdf" et "PCB-power distrib.pdf". Les deux autres fichier "PCB-FC-négatif.pdf" et "PCB-power distrib-négatif.pdf" sont utile si vous faites vos circuit imprimée avec une insoleuse. Si vous n'avez pas le materielle nécessaire suivez les instructions suivante.
   
  
  -Prennez votre radiocommande brancher le cable de bind si vous avez une Flysky fs-i6 allumez la et restez appuyez sur le bouton "Bind key" cela va permettre de crée la liaison entre la radiocommande est le recepteur puis restez appuyez sur le bouton "OK" qui vous méne vers un menu avec deux sous menu "System setup" et "Functions setup" déplacer vous avec les touches "up" et "down" sur le sous menu "Functions setup" et cliquez sur "OK" puis déplacez vous sur "Display" est cliquez "OK" est la vous verrez vos channels. Bougez vos commandes est vous verrez quel commande correspond a quel channel. 
@@ -237,7 +238,7 @@ Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre un
  <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/PBD.png" width="200" height="125">
  
  
-   L'orsque vous monté votre Drone découpé des piéces  en chambre a air ou des pads en silicone pour les mettres entre les moteurs et les bras ne séré pas trop votre moteur car sinon le pouvoir enti vibrant sera limité, rajouté des piéces en chambre a air entre les bras des moteurs est les deux plaques qui les jointes sa permettra de limiter les vibrations et d'éviter au bras de bouger. Si vous placer votre arduino ou le Circuit imprimé entre les deux plaques placer le port USB de l'arduino prés des bords pour pouvoir téleverser les programmes. Mettez aussi du frein a filer sur les vis du moteurs.
+   L'orsque vous monté votre Drone découpé des piéces  en chambre a air ou des pads en silicone pour les mettres entre les moteurs et les bras ne séré pas trop vos moteurs car le pouvoir enti vibrant sera limité, rajouté des piéces en chambre a air entre les bras des moteurs est les deux plaques qui les jointes sa permettra de limiter les vibrations et d'éviter au bras de bouger. Si vous placer votre arduino ou le Circuit imprimé entre les deux plaques placer le port USB de l'arduino prés des bords pour pouvoir téleverser les programmes. Mettez aussi du frein a filer sur les tiges filetés qui fixe les moteurs.
  
  
  - Programme
@@ -295,6 +296,9 @@ Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre un
   
   
   -Eteindre
+  
+  
+  Conseil: Pour vous assurez que tous fonctionnent bien ou changer les coefficient PID faite un banc de test. Imprimée quatre piéces du fichier "N.calibras.stl" et coller les au millieux sur les cotés du drone et aligné bien les piéces pour pouvoir passer un rond de 6mm. Puis faites un cadre ou trouver deux endrois ou fixer les deux bouts du rond.
   
  
   
@@ -679,6 +683,29 @@ Vous avez surement vue la variable "decollage" mais je ne vous et pas dit a quoi
   Nous allons voir le code qui va envoyer au ESC l'impulsion entre [1000us & 2000us] il va aussi fixer la frequence du programme a 250 Hz.
   
   
+    void transmission(){
+   
+   
+    while (micros()-prevmicros < 4000); // si notre boucle a pris moins de 4ms on attend.
+    
+    prevmicros = micros(); //on stocke le temps écoulé
+     PORTD |= B11110000; // On met a l'etat haut les pins digitales 4,5,6,7,8
+  
+  
+    while( PORTD >= 16){ // Si l'une des pins est a l'etat haut on boucle 
+    prelmicros = micros(); // on stocke le temps écoulé
+    if ( (mot1 + prevmicros) <= prelmicros) PORTD &= B11101111;
+    if ( (mot2 + prevmicros) <= prelmicros) PORTD &= B11011111;
+    if ( (mot3 + prevmicros) <= prelmicros) PORTD &= B10111111;
+    if ( (mot4 + prevmicros) <= prelmicros) PORTD &= B01111111;
+  
+    }
+  
+    }
+    
+ Dans cette petite partie du programme on met toute les broches des ESC a l'etat haut puis on boucle temps que toute les pins sont a l'etat haut. Dans la fonction while on rajoute au temps stocké dans la variable "prevmicros" les valeurs de nos moteurs puis on met les broches a l'etat bas une fois que le temps actuelle stocké dans "prelmicros" et égale ou dépasse "mot+prevmicros", une fois que toute les broches sont a l'état bas "PORTD = 00001111" ce qui vaut 15 en décimal alors on sort de la boucle du while().
+  
+  
 
  
    
@@ -864,17 +891,17 @@ Aprés avoir calculer les angles d'inclinaison avec le gyroscope nous allons cal
     
     
    
-   Maintenant que nous avons les angles du Gyro et de l'accélérométre nous allons fusionner les deux mesures. Le Gyro a pour avantage de ne pas étre sensible au vibration mes la mesure dérive au contraire l'accélérométre ne dérive pas mes est trés sensible au vibration donc les deux mesures se compense et en les fusionnant on aura de meilleur résultat l'angle ne dérivera pas dans le temps.
+   Maintenant que nous avons les angles du Gyro et de l'accélérométre nous allons fusionner les deux mesures. Le Gyro a pour avantage de ne pas étre sensible au vibration mes la mesure dérive au contraire l'accélérométre ne dérive pas mes est trés sensible au vibration donc les deux mesures se compense et en les fusionnant on aura de meilleur résultat l'angle ne dérivera presque pas dans le temps.
    
-   Le Gyro dérive car nous prenons une valeur toute les ~4ms et nous considérons que la vitesse angulaire est la méme pendant les 4ms alors quand réalité ses faut. L'accélérométre ne dérive pas car il mesure l'angle en utilisant l'apesanteur terrestre 9.81 m-s. D'ailleurs nous verrons juste aprés dans la partie ou l'on fusionne les deux mesures que plus votre programme a une frequence élevé moins nous utilisons la mesure de l'accelérométre.
+   Le Gyro dérive car nous prenons une valeur toute les ~4ms et nous considérons que la vitesse angulaire est la méme pendant les 4ms alors quand réalité ses faut. L'accélérométre ne dérive pas car il mesure l'angle en utilisant l'apesanteur terrestre 9.81 m-s. D'ailleurs nous verrons juste aprés dans la partie ou l'on fusionne les deux mesures et que plus votre programme a une frequence élevé moins nous utilisons la mesure de l'accelérométre.
    
    
     void calculangle () {
     
     if (initialized) {
     // (gyro * (1-temps parcouru pour une boucle) + Accel * (temps parcourue pour une boucle)
-    angleRO = angleRO * 0.98 + RollaccA * 0.02; 
-    anglePO = anglePO * 0.98 +  PitchaccA* 0.02;
+    angleRO = angleRO * 0.996 + RollaccA * 0.004; 
+    anglePO = anglePO * 0.996 +  PitchaccA* 0.004;
     } else {
     //La premiere mesure est faite seulement par l'accelerometrre 
     angleRO = RollaccA;
@@ -882,6 +909,31 @@ Aprés avoir calculer les angles d'inclinaison avec le gyroscope nous allons cal
     initialized = true;
     }
     }
+    
+    // Si vous voyez que votre angle dérive n'hésitez pas a modifier les coefficient utiliser pour la fusion des données.
+    
+    
+    
+ Dans la prochaine partie on rajoute un second filtre pour ameliorez la precision puis on calcule est filtre la vitesse de déplacement "°/S" autour des axes.
+ 
+ 
+    void calculangle () {
+    
+    angleR  = angleR * 0.9 + angleRO * 0.1; // on utilise de nouveau un filtre complementaire
+    angleP = angleP * 0.9 + angleRO1 * 0.1;
+    // on calcule les "°/S" pour chaque axe est on les filtres "filtre passe-bas 10hz"
+    ASR = (ASR * 0.7) + ((Rollgyro / 65.5) * 0.3);    
+    ASP = (ASP * 0.7) + ((Rollgyro1 / 65.5) * 0.3); 
+    ASY = (ASY * 0.7) + ((Yawgyro/ 65.5) * 0.3);   
+    
+    }
+    
+    
+    
+ Mon programme utilisent deux gyroscopes a 90° car l'axe du pitch ne fonctionne pas, le drone etait completement instable. J'ai essayer de trouver le probléme en regardant si l'angle du pitch indiquer par le Gyro correspondait a son angle réelle est je n'ai pas vue de probléme, je me suis  dit que sa devais etre le régulateur PID j'ai alors tourner le gyroscope de 90° sur le drone de sorte que l'axe du PITCH du GYRO soit sur l'axe du ROLL du drone et le PITCH du drone sur l'axe du ROll du GYRO et mon drone et devenu instable sur l'axe du ROLL ce qui montre que le probléme ne vient pas du PID. J'ai aussi fait un "Self-test" qui nous permet de tester si le Gyro et l'Accel non pas de probléme mechanique ou électrique mais les résultat etait proche des valeurs d'usine.  J'essayerais mon drone avec un seul Gyro neuf l'orsque je l'aurais recu. Pour l'instant avec les deux gyroscopes le drone fonctionnent bien et reste stable. 
+      
+ 
+ 
 
   
   
