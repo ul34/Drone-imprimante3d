@@ -289,7 +289,12 @@ Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre un
     mpu1.setZGyroOffset(-8);
   
   
-  Normalement apres avoir televerser le programme "FCuno.ino" votre dronne est prét a voler.
+  Normalement apres avoir televerser le programme "FCuno.ino" votre dronne est prét a voler. Pour eviter les accidents il faut faire une combinaison de mouvement avec les stick pour allumer les moteurs et que votre drone soit prét a décoller ou une autre combinaison pour eteindre les moteurs.
+  
+  -Décollage
+  
+  
+  -Eteindre
   
  
   
@@ -299,7 +304,7 @@ Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre un
   
   - Explication Programme
   
-  Notre programme recoit les commandes ordonné par notre radiocommande qui lui donne un angle a atteindre (Consigne) est les donnés du gyroscopes qui lui donne sa position actuelle est a la vitesse a laquelle le drone se déplace autour de ses trois axes,pour que le drone suive la consigne quon lui donne nous allons utiliser un régulateur P.I.D qui en fonction de la vitesse de déplacement du drone de sa position et de la consigne va distribuer la puissance des moteurs pour atteindre la consigne.
+  Notre programme recoit les commandes ordonné par notre radiocommande qui lui donne un angle a atteindre (Consigne) est les donnés du gyroscopes qui lui donne sa position actuelle est a la vitesse a laquelle le drone se déplace autour de ses trois axes,pour que le drone suive la consigne quon lui donne nous allons utiliser un régulateur P.I.D qui en fonction de la vitesse de déplacement du drone de sa position et de la consigne va distribuer la puissance des moteurs pour atteindre la consigne et se stabiliser.
   
   
   -lecture des données recus par le recepteur
@@ -540,13 +545,22 @@ Maintenant que nous avons déclarée nos interruptions au pins 8,9,10,11 nous po
  
 }
 
+ 
 
-Maintenant on va voir la partie du code qui va nous permettre de distribuer la puissance a chaque moteur.
 
+
+
+
+
+Maintenant on va voir la partie du code qui va nous permettre de calculer les valeurs que l'on va envoyer aux ESC de chaque moteur en fonction des sorties du régulateur PID .
+     
+     void Signeauxcorrec(){
+       if ( decollage == 1){ 
      mot1 = ConsG-EPIDR-EPIDP-EPIDY;
      mot2 = ConsG+EPIDR-EPIDP+EPIDY;
      mot3 = ConsG-EPIDR+EPIDP+EPIDY;
      mot4 = ConsG+EPIDR+EPIDP-EPIDY;
+     }
      
      
  On rajoute la consigne GAZ a tous les moteur et nous soustrayons ou additionnons les sorties du controleur PID en fonction du signe de ses sorties, pour comprendre le mieux est de voir des exemples.
@@ -555,7 +569,7 @@ Maintenant on va voir la partie du code qui va nous permettre de distribuer la p
  
     Exemple Détaillé.
  
-      KPP = 1;
+      KPP = 1;      // Contexte : Pitch = -2°, Pitch = -10°/S, Consigne Pitch = 0°
       KPI = 1;
       KPD = 1
  
@@ -571,21 +585,14 @@ Maintenant on va voir la partie du code qui va nous permettre de distribuer la p
      mot3 = ConsG-EPIDR+EPIDP+EPIDY; // 1074 = 1200 - 0 +-126 + 0;
      mot4 = ConsG+EPIDR+EPIDP-EPIDY; // 1074 = 1200 + 0 +-126 - 0;
   
-      
-  
-  
-   
-  
- 
- 
- 
+
  Si a l'inverse le drone se deplace autour de l'axe du "PITCH" vers l'arriére  a une vitesse de 10°/S est que votre Consigne est   égale a 0, il faut alors baissé la puissance de "mot1, mot2" est augmentez la puissance de "mot3, mot4". "EpropP =10-0" la valeur de sortie est positive +10 pour le "mot1, mot2" sa fait "0-+10 = -10" et pour "mot3, mot4" sa fait "0++10= +10.
  
  
  
     Exemple Détaillé.
  
-    KPP = 1;
+    KPP = 1;         // Contexte : Pitch = 2°, Pitch = 10°/S, Consigne Pitch = 0°
     KPI = 1;
     KPD = 1
  
@@ -602,7 +609,78 @@ Maintenant on va voir la partie du code qui va nous permettre de distribuer la p
     mot4 = ConsG+EPIDR+EPIDP-EPIDY; // 1326 = 1200 + 0 +126 - 0;
    
    
+ 
    
+   
+   
+ La prochaine partie va mesurée le voltage de la batterie et ajuster la puissance de chaque moteur et limiter les valeurs pour quel soit cohérente avec nos ESC,vous pouvez régler la valeur limite basse de vos moteurs cette valeur c'est la vitesse de vos moteur quand vos GAZ seront a zero si vous la montez un peut est que vous mettez les gaz en position zero votre dronne retombera moins vite si vous l'augmentez trop votre drone decollera alors que vous n'avez pas touché les GAZ . Si la batterie est en dessous de 3.3v par cellules le buzzer s'activent.
+   
+   
+     void Signeauxcorrec(){
+    if ( decollage == 1){ // L'orsque le decollage est activé  
+    
+    //on mesure le voltage de la batterie et on filtre le signal
+    batterieV = batterieV * 0.92 + (analogRead(0) + 65) * 0.09853; 
+   
+    // on incrémente les valeurs au moteur en fonction du voltage
+    if ( batterieV < 1240 &&  batterieV > 800){  
+     mot1 += mot1 * ((1240 - batterieV)/(float)3500);
+     mot2 += mot2 * ((1240 - batterieV)/(float)3500);
+     mot3 += mot3 * ((1240 - batterieV)/(float)3500);
+    mot4 += mot4 * ((1240 - batterieV)/(float)3500);
+    }
+    
+    //on active le buzzer Si le voltage de la batterie est plus petit que 10V
+     if ( batterieV < 1000 ){  
+     digitalWrite(13,HIGH);
+     
+     }else{
+       digitalWrite(13,LOW);
+     }
+    
+    
+  
+     // on limite les valeurs de chaque moteur quand
+     if (mot1 < 1100) mot1 = 1050; // valeur basse
+     if (mot1 > 2000) mot1 = 2000; // valeur haute
+     if (mot2 < 1100) mot2 = 1050;
+     if (mot2 > 2000) mot2 = 2000;
+     if (mot3 < 1100) mot3 = 1050;
+     if (mot3 > 2000) mot3 = 2000;
+     if (mot4 < 1100) mot4 = 1050;
+     if (mot4 > 2000) mot4 = 2000;
+  
+    } else{ // valeur a l'arret
+    mot1 = 1000;
+    mot2 = 1000;
+    mot3 = 1000;
+    mot4 = 1000;
+    }
+    }
+    
+    
+Vous avez surement vue la variable "decollage" mais je ne vous et pas dit a quoi elle pouvée servir. Elle permet d'éviter les démarges intempéstif des moteurs si par accident vous tomber votre radiocommande. Pour que vos moteur démarre et que votre drone sot prét a décoller il faut faire une combinaison de mouvement de stick, pareil si vous voulez eteindre les moteurs du drone il faut faire une autre combinaison. La partie de code suivante va tester les CH pour connaitre nos mouvement de stick et mettre la variable décollage a 1 "moteur allumer prét a decollé" ou decollage a 0 "moteur a "l'arret".
+
+
+     void activation(){
+     // Si les conditions sont vraie change la variable decollage est on appelle la fonction resetvariable()
+    if(decollage == 0 && chanel1 <= 1008 && chanel4 > 1980 && chanel3 > 1980){ 
+    decollage = 1; 
+    resetvariable(); // On met les variables du regulateur PID a 0 
+    } 
+    // Si les conditions sont vraie on change la variable decollage
+    if(decollage == 1 && chanel1 <= 1008 && chanel2 > 1980 && chanel4 < 1008){
+    decollage = 0;
+    } 
+ 
+    }
+    
+    
+  Nous allons voir le code qui va envoyer au ESC l'impulsion entre [1000us & 2000us] il va aussi fixer la frequence du programme a 250 Hz.
+  
+  
+
+ 
    
    
    Nous allons voir le code qui permet de configurer le deux gyroscope et accélérométre. Récupéré les données brute et les transformés en angle° et en angle°/S.
