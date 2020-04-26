@@ -244,7 +244,7 @@ Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre un
  - Programme
  
  -Le fichier "ESCALIB.ino" va nous permettre de calibrer les ESC , une fois le programme televerser ouvré le Serial  taper "1" puis "Entrée", branchez la batterie puis taper "0" la vous entendrez trois "beep" cela signifie que votre batterie est une 3S pour finir rentrer "2" dans le Serial, vous verrez vos moteur montez en puissance jusqu'a leur puissance maximale puis ils éteignent . Si vous avez l'aruino mega pro mini il faut changer la declarations des pin en mode OUTPUT "DDRD |= B11110000;" en  "DDRA  |= B11110000;" et changer toutes l'activation des pins a l'état haut "PORTD |= mot;" en "PORTA |= mot;" et a l'etat bas 
- "PORTD &=  B00000000;" en "PORTA &=  B00000000;"
+ "PORTD &=  B00000000;" en "PORTA &=  B00000000;".
  
  
  Que fait notre programme ESCALIB.ino ?
@@ -845,7 +845,7 @@ Le Gyro meme au repos est trés sensible au vibration "bruit" ce qui a pour effe
      }
      
      
-  Pour calculer l'angle on intégre la rotation angulaire toute les 4ms vu que notre programme fonctionnent a 250 Hz. Notre valeur brute divisée par la valeur inscrite sur la datasheet en fonction de la plage de mesure que l'on a configurée nous donne la vitesse de déplacement °/S. Je vais vous donner des exemples si votre plage de mesure est de 500 °/S la valeur donner par la datashett ces 65.5 si l'on fait "500 * 65.5 = 32750" ce qui veut dire que la valeur brute maximale qu'on recevra sera 32750 quand le drone se déplace a 500°/S "32750 /65.5 = 500 °/S" nous savon que notre programme boucle toute les 4 ms si nous recevont 32750 ca veut dire que notre drone se deplace de 500 degrés en une seconde mes vue que nous savons qu'il c'est écoulé 4ms qui représente 1/250 de seconde on fait "500/250 = 2" se qui nous donne de combien de degrés ses déplacer le drone "2°" et a chaque boucle on incrémente l'angle parcourue pour avoir notre positio en degrés.
+  Pour calculer l'angle on intégre la rotation angulaire toute les 4ms vu que notre programme fonctionnent a 250 Hz. Notre valeur brute divisée par la valeur inscrite sur la datasheet en fonction de la plage de mesure que l'on a configurée nous donne la vitesse de déplacement °/S. Je vais vous donner des exemples si votre plage de mesure est de 500 °/S la valeur donner par la datashett ces 65.5 si l'on fait "500 * 65.5 = 32750" ce qui veut dire que la valeur brute maximale qu'on recevra sera 32750 quand le drone se déplace a 500°/S "32750 /65.5 = 500 °/S" nous savon que notre programme boucle toute les 4 ms si nous recevont 32750 ca veut dire que notre drone se deplace de 500 degrés en une seconde mes vue que nous savons qu'il c'est écoulé 4ms qui représente 1/250 de seconde on fait "500/250 = 2" se qui nous donne de combien de degrés ses déplacer le drone "2°" et a chaque boucle on incrémente l'angle parcouru pour avoir notre position en degrés.
   
   Si vous avez choisi une autre plage de mesure changer la valeur de la variable "SSF_GYRO" plus votre plage de mesure est grande moins le Gyro est précis.
   
