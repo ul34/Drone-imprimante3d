@@ -237,7 +237,7 @@ Et voici le calcul qui nous permet de connaitre la valeur de "R1 = (U/U2)*R2-R2"
 Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre une couche d'etein sur les pistes avec les huit trous pour alimenter vos ESC il peut passer dans ces pistes un courant de 60 amperes et risque de crée une surchauffe.
 
 
- <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/PBD.png" width="200" height="125">
+ <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/PDB.png" width="200" height="125">
  
  
    L'orsque vous monté votre Drone découpé des piéces  en chambre a air ou des pads en silicone pour les mettres entre les moteurs et les bras ne séré pas trop vos moteurs car le pouvoir enti vibrant sera limité, rajouté des piéces en chambre a air entre les bras des moteurs est les deux plaques qui les jointes sa permettra de limiter les vibrations et d'éviter au bras de bouger. Si vous placer votre arduino ou le Circuit imprimé entre les deux plaques placer le port USB de l'arduino prés des bords pour pouvoir téleverser les programmes. Mettez aussi du frein a filer sur les tiges filetés qui fixe les moteurs.
