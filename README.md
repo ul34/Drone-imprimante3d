@@ -891,7 +891,8 @@ Aprés avoir calculer les angles d'inclinaison avec le gyroscope nous allons cal
        Regardez l'image suivante.
     
     
-    
+   
+   <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/%20ARCSIN.png" width="200" height="125">
    
    Maintenant que nous avons les angles du Gyro et de l'accélérométre nous allons fusionner les deux mesures. Le Gyro a pour avantage de ne pas étre sensible au vibration mes la mesure dérive au contraire l'accélérométre ne dérive pas mes est trés sensible au vibration donc les deux mesures se compense et en les fusionnant on aura de meilleur résultat l'angle ne dérivera presque pas dans le temps.
    
