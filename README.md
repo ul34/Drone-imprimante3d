@@ -72,7 +72,7 @@ Résumons L'arduino est un MiCro "Plug&Play" qui va nous permettre de recevoir d
 
 - Le gyroscope & accéléromètre
 
--Le MPU6050 est une centrale inertielle qui réuni gyroscope et accelerométre ce qui permet au microcontrolleur de connaitre la position du drone autour de trois axe X = ROLL, Y = PITCH, Z = YAW en degrés est la vitesse a laquelle il se déplace en degrés/S. Vous verrez plus tard qu'il est parametrable cela nous permettra de determiner une certaines plage de mesure ou activer des filtres.Il communiquera avec l'arduino via le protocole de communication nommé "I2C".
+-Le MPU6050 est une centrale inertielle qui réuni gyroscope et accelerométre ce qui permet au microcontrolleur de connaitre la position du drone autour de trois axe X = ROLL, Y = PITCH, Z = YAW en degrés et la vitesse a laquelle il se déplace en degrés/S. Vous verrez plus tard qu'il est parametrable cela nous permettra de determiner une certaines plage de mesure ou activer des filtres.Il communiquera avec l'arduino via le protocole de communication nommé "I2C".
 
 - ESC
 
@@ -252,7 +252,7 @@ Conseil: l'orsque vous souderé la power distribution n'hésitez pas a mettre un
  L'orsque vous rentrez  "1" l'arduino envoie au ESC  chaque 8ms une impulsion de 2000us qui est la valeur maximaxe ce qui va mettre l'ESC en mode programmation puis quand on rentre "0" l'arduino envoie des impulsions de 1000us ce qui indique au ESC quel largeur d'impulsion est égale au moteur eteint, donc 2000us est égale a la vitesse maximale et 1000us au moteur eteint. Puis quand on rentre "2" on incremente une valeur a l'impulsion minimale j'usqu'a ateindre sa valeur maximale puis on retourne a une l'argeur d'impulsion de 1000us. 
  
  
- -Maintenant que nous avons nos ESC calibré rendez vous sur ce lien https://github.com/jrowberg/i2cdevlib est télécharger les fichier, dans tous ces fichier il ya deux bibliothéque qui nous intéresse "I2Cdev.h" et MPU6050.h une fois que vous les avez intégré dans votre IDE, télecharger le programme ecrit par Luis RODENA qui se trouve dans le fichier "...." qui va nous permettre de calibrer nos deux Gyro. 
+ -Maintenant que nous avons nos ESC calibré rendez vous sur ce lien https://github.com/jrowberg/i2cdevlib est télécharger les fichier, dans tous ces fichier il ya deux bibliothéque qui nous intéresse "I2Cdev.h" et MPU6050.h une fois que vous les avez intégré les dans votre IDE, télecharger le programme ecrit par Luis RODENA qui se trouve dans le fichier "...." qui va nous permettre de calibrer nos deux Gyro. 
  
  
  Pour le faire il faut d'abord bien positionner votre drone a plat en  utilisent un niveau a bulle, une fois qu'il est bien a plat on va pouvoir televerser le programme dans notre arduino. Mais nous avons deux Gyro a calibrer nous allons les calibrer un a la fois pour savoir lequel des deux nous sommes entrein de calibrer il faut connaitre l'adresse de chaque Gyro notre MPU-1 a pour adresse "0x68" et MPU-2 "0x69". Regarder le programme vous verrez cette ligne "MPU6050 accelgyro(0x69);" pour pouvoir changer de Gyro il suffit de changer l'adresse qui est entre parenthése par l'adrresse de votre Gyro.
@@ -485,7 +485,7 @@ Maintenant que nous avons déclarée nos interruptions au pins 8,9,10,11 nous po
  
  Si vous voulez voir les differents effets des coefficiens des erreurs "Prop,Int,Dev" regardez cette video :https://www.youtube.com/watch?v=uXnDwojRb1g.
  
- Sur votre banc de test faite varier les coefficient en fonction de vos préférence.
+ Sur votre banc de test faite varier les coefficients en fonction de vos préférence.
      
      
      float KYP = 6; // Coefficient Erreur Prop "YAW"
@@ -547,7 +547,7 @@ Maintenant que nous avons déclarée nos interruptions au pins 8,9,10,11 nous po
      if ( EPIDY > 400 ) EPIDY = 400;
      if ( EPIDY < -400 )EPIDY = -400;
  
-}
+    }
 
  
 
@@ -710,7 +710,7 @@ Vous avez surement vue la variable "decollage" mais je ne vous et pas dit a quoi
  
    
    
-   Nous allons voir le code qui permet de configurer le deux gyroscope et accélérométre. Récupéré les données brute et les transformés en angle° et en angle°/S.
+   Nous allons voir le code qui permet de configurer le deux gyroscopes et accélérométres. Récupéré les données brute et les transformés en angle° et en angle°/S.
    
    
         #include <Wire.h>
@@ -886,7 +886,7 @@ Aprés avoir calculer les angles d'inclinaison avec le gyroscope nous allons cal
     }
     
     // arcsin prend le sinus de l'angle (Pitchacc(coté opposé)/ acc_total_vector(hypothénuse)) est renvoie l'angle.
-       Regardez ce pdf DGyro.pdf
+       Regardez l'image suivante.
     
     
     
