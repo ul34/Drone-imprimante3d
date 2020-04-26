@@ -197,11 +197,13 @@ Petite Hélice = peu de portance → vol moins stable et à besoin de moins de p
     CH4"ROLL"  a la pin digital 10.
  
 
- 
-  <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/DR.png" width="200" height="125">
+  
  
   passons au soudure tous dabord il faut souder un fil entre le "VCC" du MPU-2 et sa broche "ADO" puis relier le "VCC"
  des deux "MPU" sur le +3.3V de l'arduino, les deux "GND" sur un GND, les deux "SDA"(Serial data) sur "A4" les deux "SCL"(Serial clock line) sur "A5". Pour plus de solidité est éviter l'arrachement d'un fils réunissez les et faite une trésse.
+ 
+ 
+  <img src="https://raw.githubusercontent.com/ul34/Drone-imprimante3d/master/DR.png" width="200" height="125">
  
  
   -Il reste alors les ESC a installée est a racorder a l'arduino, regarder l'image ci-dessous est vous verrez les deux fils d'alimentation (+12v,-) le fils signaux avec son gnd puis les trois fils moteur, rappeller vous nos moteur on trois phases et tous les moteurs de notre drone ne tourne pas dans le méme sens regarder de nouveau l'image ou il ya les deux gyroscopes vous verrez quel moteur tourne dans quel sens, horaire ou anti-horaire. Pour inverser le sens d'un moteur il suffit d'inverser le branchement des fils moteur. Maintenant nous allons souder aux arduino les fils du signaux de chaque ESC . 
