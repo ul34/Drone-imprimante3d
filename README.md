@@ -933,12 +933,59 @@ Aprés avoir calculer les angles d'inclinaison avec le gyroscope nous allons cal
     
     
     
- Mon programme utilisent deux gyroscopes a 90° car l'axe du pitch ne fonctionne pas, le drone etait completement instable. J'ai essayer de trouver le probléme en regardant si l'angle du pitch indiquer par le Gyro correspondait a son angle réelle est je n'ai pas vue de probléme, je me suis  dit que sa devais etre le régulateur PID j'ai alors tourner le gyroscope de 90° sur le drone de sorte que l'axe du PITCH du GYRO soit sur l'axe du ROLL du drone et le PITCH du drone sur l'axe du ROll du GYRO et mon drone et devenu instable sur l'axe du ROLL ce qui montre que le probléme ne vient pas du PID. J'ai aussi fait un "Self-test" qui nous permet de tester si le Gyro et l'Accel non pas de probléme mechanique ou électrique mais les résultat etait proche des valeurs d'usine.  J'essayerais mon drone avec un seul Gyro neuf l'orsque je l'aurais recu. Pour l'instant avec les deux gyroscopes le drone fonctionnent bien et reste stable. 
+ Mon programme utilisent deux gyroscopes a 90° car l'axe du pitch ne fonctionne pas, le drone etait completement instable. J'ai essayer de trouver le probléme en regardant si l'angle du pitch indiquer par le Gyro correspondait a son angle réelle est je n'ai pas vue de probléme, je me suis  dit que sa devais etre le régulateur PID j'ai alors tourner le gyroscope de 90° sur le drone de sorte que l'axe du PITCH du GYRO soit sur l'axe du ROLL du drone et le PITCH du drone sur l'axe du ROll du GYRO et mon drone et devenu instable sur l'axe du ROLL ce qui montre que le probléme ne vient pas du PID. J'ai aussi fait un "Self-test" qui nous permet de tester si le Gyro et l'Accel non pas de probléme mechanique ou électrique mais les résultat etait proche des valeurs d'usine.  J'essayerais mon drone avec un seul Gyro neuf l'orsque je l'aurais recu. Pour l'instant avec les deux gyroscopes le drone fonctionnent bien et reste stable . Les programmes "" et "" n'utilisent qu'un Gyro essayait les sur un bac de test pour voir si sa fonctionnent.
+ 
+ 
+ 
+ 
+ - Amelioration
+ 
+ Le controleur de vol que nous avons fait est trés loin d'étre optimal pour plusieurs raisons. 
+ 
+ 
+ -Le drone ne restera pas sur place, pour qu'il le reste il faudrait ajouté un magnétométre et un GPS qui nous permettrait d'avoir la position(longitude, latitude), l'altitude et la direction du drone. L'orsque vous n'actionnées pas les commandes du "ROLL" et du "PITCH" le programme stoke la position et l'altitude du drone grace au gps et un régulateur P.D va se charger de maintenire la position et l'altitude. Vous pouvez aussi implementez un programme qui en cas de perte de signal reviens vers vous dans ce cas il faut enregistrer la position quand vous faites d'écollé votre drone et l'altitude maximale atteinte pendant le vol. il faut definir une variable qui stok le gain d'altitude, quand on pert le signal le drone remontera a l'altitude maximale atteinte pendant le vol plus le gain d'altitude. Si vous voulez plus d'information je vous invite a aller voir l'exellente série de video de Joop Brokking: https://www.youtube.com/channel/UCpJ5uKSLxP84TXQtwiRNm1g
+ 
+ 
+ - La fréquence d'échantillonage de notre programme est de 250Hz pour le Gyro&Accel et le P.I.D ce qui est trés faible comparé au carte de vol disponible dans le commerce qui peuvent échantilloner facilement en 4Khz j'usqua 32Khz pour les meilleurs carte. Notre drone peut voler car il n'est pas particuliérement rapide et nerveu, les drones les plus rapide dépassent les 300K/MH sur ce type de drone notre controleur de vol ne pourrait pas fonctionné car notre drone parcour une distance trop grande alors que le Gyro na fait qu'une mesure. Haugmentez la frequence nécéssitent un réglage des filtres car le Gyro a un biais moin important vu que l'incrémentation de l'angle est faite plus souvent mais en contrepartie la sensibibilité au bruit augmente. Est la vous allez vous demander pourquoi on augmente pas la frequence en modifiant tous simplement la ligne de code suivante "while (micros()-prevmicros < 4000);" et la variable "FREQ" ?  Les MiCro de l'arduino uno ou mega ont une frequence de 16Mhz et ne nous permette pas de faire tourner notre programme a plus de 250Hz l'arduino n'est pas fait pour de t'elle application il est généralement utiliser pour voir si un protype fonctionnent.
+ 
+ Les controleurs de vol disponible dans le commerce on en général des MiCro stm32 qui se decline en plusieurs versions "F4,F7,H7...." qui peuvent fonctionner a des fréquences beaucoup plus élevée 216Mhz pour le "F7" et ~450MHZ pour le "H7" les différentes version ont aussi plus ou moins de memoire ce qui permet de rajouter des fonctionnalités. Il existe une carte de dévellopement qui a un MiCro stm32 F7 "NUCLEO-F722ZE" avec cette carte vous pourrait lire les données du Gyro&Accel  beaucoup plus vite et faire tourner aussi plus vite les régulateur P.I.D.
+ 
+ 
+ 
+ Maintenant que vous avez un MiCro plus performant on va s'interesser au différente centrale inertielle disponible sur le marcher.
+ 
+ 
+ -Le MPU-6000 a une bonne tolérance au vibration et peut  communiquer les données du Gyro a 8Khz et de l'Accel a 1Khz en utilisant le protocole de communication SPI
+ 
+ -Le MPU-6050 que nous utilisons peut étre utiliser seulement avec le protocole de communnication I2C 400Khz qui limite la vitess delecture du Gyro a environ 2Khz et de l'Accel a 1Khz il et rarement utilisé sur les carte de vol.
+ 
+ 
+ -Le MPU-6500 peut fonctionner j'usqua 32Khz avec le protocole de communication SPI si vous avez un MiCro F4 ou F7.
+ 
+ 
+ -Le ICM20602 a été spécialement concu pour les drones il censé étre moins sensible au bruit et fonctionnent aussi en 32Khz mais d'aprés des tests il serait beaucoup plus sensible au bruit.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
       
  
  
 
-  
+ https://www.wearefpv.fr/filtres-betaflight-tuning-en-3-5-et-plus-20190202/
+ 
+ https://blog.dronetrest.com/inertial-sensor-comparison-mpu6000-vs-mpu6050-vs-mpu6500-vs-icm20602/
   
       
        
